@@ -259,7 +259,7 @@ class Data{
      * get data from sql db
      * @return array
      */
-    public function read( $where ){
+    public function readOne( $where ){
         return $this->initPdo()->query( 'select * from `' . $this->tableName . '` where ' . $where . ' limit 0,1' )->fetch( PDO::FETCH_ASSOC );
     }
 
@@ -267,13 +267,13 @@ class Data{
      * find multi rows from sql db
      * @return array
      */
-    public function readAll( $where , $order = '' , $limit = '' ){
+    public function read( $where , $order = '' , $limit = '' ){
         return $this->initPdo()->query( 'select * from `' . $this->tableName . '` where ' . $where . ' ' . $order . ' ' . $limit )->fetchAll( PDO::FETCH_ASSOC );
     }
 
     public function count( $where = '1=1' ){
         $row = $this->initPdo()->query( 'select count(*) c from `' . $this->tableName . '` where ' . $where )->fetch( PDO::FETCH_ASSOC );
-        return $row[ 'c' ];
+        return $row['c'];
     }
 
     public function isExist( $column , $value ){
