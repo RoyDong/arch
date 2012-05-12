@@ -14,7 +14,7 @@ CREATE TABLE `ew_user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(100) NOT NULL DEFAULT '',
   `password` varchar(16) NOT NULL DEFAULT '',
-  `nick` varchar(100) NOT NULL DEFAULT '',
+  `username` varchar(100) NOT NULL DEFAULT '',
   `created_at` int(11) unsigned NOT NULL,
   `updated_at` int(11) NOT NULL,
   PRIMARY KEY (`id`),

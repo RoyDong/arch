@@ -5,13 +5,14 @@
 
 function main(){
     $class = ucfirst( $_GET[ 'a' ] ? $_GET[ 'a' ] : 'main'  ) . 'Action';
-    $file = ROOT_DIR . '/actions' . $_GET[ 'p' ] . $class . '.php';
+    $file = ROOT_DIR . '/action/' . $_GET[ 'm' ] . '/' . $class . '.php';
 
     if( file_exists( $file ) ){
         require $file;
         $action = new $class;
 
         try{
+            setcookie( 'flash' , '' );
             $action->init();
             $action->filter();
             $action->execute();
@@ -98,7 +99,7 @@ abstract class Action{
     protected function get( $key , $default = null ){
         if( empty( $_GET[ $key ] ) ){
             if( $default === null )
-                throw new KernelException( t( 'param missing' , array( 'param' => $key ) ) , KernelException::PARAM_MISSING );
+                throw new Exception( t( 'param missing' , array( 'param' => $key ) ) );
 
             return $default;
         }
@@ -115,7 +116,7 @@ abstract class Action{
     protected function post( $key , $default = null ){
         if( empty( $_POST[ $key ] ) ){
             if( $default === null )
-                throw new KernelException( t( 'param missing' , array( 'param' => $key ) ) , KernelException::PARAM_MISSING );
+                throw new Exception( t( 'param missing' , array( 'param' => $key ) ) );
 
             return $default;
         }
@@ -129,18 +130,29 @@ abstract class Action{
 
     protected function render( $contentTemplatePath , $data = array() ){
         extract( $data );
-        require $this->layout ? $this->tpl( 'layouts/' . $this->layout ) : $this->tpl( $contentTemplatePath );
+        require $this->layout ? $this->tpl( 'layout/' . $this->layout ) : $this->tpl( $contentTemplatePath );
     }
 
     protected function redirect( $url ){
-        header( 'Location ' . $url );
+        header( 'Location: ' . $url );
+        exit;
     }
 
-    protected function createUrl( $url ){
-        if( strncmp( $url , 'http://' , 7 ) === 0 )
-            return $url;
+    protected function cookie( $key ){
+        return empty( $_COOKIE[ $key ] ) ? '' : $_COOKIE[ $key ];
+    }
 
-        return '/' . $url;
+    protected function createUrl( $m , $a = null , $params = array() ){
+        if( strncmp( $m , 'http://' , 7 ) === 0 )
+            return $m;
+
+        $query = '';
+        foreach( $params as $key => $value ) 
+            $query .= '&' . $key . '=' . $value;
+
+        if( $a ) return '/index.php?m=' . $m . '&a=' . $a . $query;
+
+        return '/' . $m;
     }
 }
 
@@ -179,7 +191,7 @@ class Data{
      */
     public static function getInstance( $name ){
         if( empty( self::$pool[ $name ] ) ){
-            $class = $name . 'Model';
+            $class = $name . 'Data';
             self::$pool[ $name ] = new $class;
         }
 
