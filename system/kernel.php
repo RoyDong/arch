@@ -194,6 +194,7 @@ class Data{
         if( empty( $this->pdo ) ){
             $config = c( 'db' );
             $this->pdo = new PDO( $config[ 'dsn' ] , $config[ 'username' ] , $config[ 'password' ] );
+            $this->tableName = $config[ 'tablePrefix' ] . $this->tableName;
         }
 
         return $this->pdo;
