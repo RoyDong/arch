@@ -10,9 +10,11 @@ class User {
 
     protected $profile = array();
 
-    private $letters = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    private static $letters = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     private $isNew = true;
+
+    private $profileLoaded = false;
 
 
     public function __construct( $id = 0 ){
@@ -50,6 +52,8 @@ class User {
         if( $name === 'data' ) return $this->data;
         if( $name === 'profile' ) return $this->profile;
         if( $name === 'all' ) return $this->profile + $this->data;
+
+        return '';
     }
 
     public function setEmail( $email ){
@@ -71,6 +75,14 @@ class User {
         return true;
     }
 
+    public function signin( $password ){
+        if( !$this->isNew && $this->data['password'] === $password ){
+            $_SESSION['user_id'] = $this->data['id'];
+            return true;
+        }
+        return false;
+    }
+
     public function save(){
         if( $this->isNew ){
             $this->data['password'] = $this->getRndPassword();
@@ -79,7 +91,8 @@ class User {
             $this->data['id'] = Data::getInstance( 'User' )->insert( $this->data );
         }else{
             $this->data['updated_at'] = $_SERVER['REQUEST_TIME'];
-            Data::getInstance( 'User' )->update( $this->data );
+            Data::getInstance( 'User' )
+                    ->update( $this->data , '`id`="'.$this->data['id'].'"');
         }
     }
 
@@ -87,8 +100,55 @@ class User {
         $password = '';
 
         for( $i = 0 ; $i < $length ; $i++ ) 
-            $password .= $this->letters[ rand( 0 , 61 ) ];
+            $password .= User::$letters[ rand( 0 , 61 ) ];
 
         return $password;
+    }
+
+    public function setOAuthTokenId( $tokenId ){
+        $this->data['oauth_token_id'] = $tokenId;
+    }
+
+    public function getDefaultWeiboApi(){
+        if( !$this->data['oauth_token_id'] ){
+            $token = Data::getInstance( 'UserOAuthToken' )
+                    ->readOne( '`user_id`="'. $this->data['id'].'"' );
+
+            if( !$token ) return null;
+
+            $this->data['onuth_token_id'] = $token['oauth_token_id'];
+            $this->save();
+        }
+
+        return WeiboApi::getInstance( $this->data['id'] , $this->data['oauth_token_id'] );
+    }
+
+    public function getWeiboList(){
+        $list = Data::getInstance( 'User' )->readWeiboList( $this->data['id'] );
+        if( empty( $list ) ) return false;
+        $api = $this->getDefaultWeiboApi();
+        $data = array();
+
+        foreach( $list as $token ){
+            $user = $api->user( $token['sns_user_id'] );
+
+            $data[ $token['id'] ] = array(
+                'sns_name' => $user['screen_name'],
+                'sns_avatar' => $user['profile_image_url'],
+                'verified' => $user['verified'],
+            );
+        }
+
+        return $data;
+    }
+
+    public function deleteToken( $tokenId ){
+        Data::getInstance( 'UserOAuthToken' )
+                ->delete( '`user_id`="'.$this->data['id'].'" and `oauth_token_id`="'.$tokenId.'"' );
+
+        if( $tokenId === $this->data['oauth_token_id'] ){
+            $this->data['oauth_token_id'] = 0;
+            $this->save();
+        }
     }
 }

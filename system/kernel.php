@@ -10,9 +10,7 @@ function main(){
     if( file_exists( $file ) ){
         require $file;
         $action = new $class;
-
         try{
-            setcookie( 'flash' , '' );
             $action->init();
             $action->filter();
             $action->execute();
@@ -80,12 +78,27 @@ abstract class Action{
 
     protected $layout = 'main';
 
+    protected $user = null;
+
+    public $method = 'get';
+
+    public function __construct(){
+        session_start();
+        setcookie( 'flash' , '' );
+        if( $_SERVER['REQUEST_METHOD'] === 'POST' ) 
+            $this->method = 'post';
+
+        if( isset( $_SESSION['user_id'] ) && $_SESSION['user_id'] > 0 )
+            $this->user = User::load( $_SESSION['user_id'] );
+    }
+
     public function init(){}
 
     public function filter(){}
 
     public function error( $message , $code ){
-        require ROOT_DIR . '/template/error.php';
+        var_dump( $message );
+        //require ROOT_DIR . '/public/error.html';
     }
 
     abstract function execute();
@@ -184,6 +197,13 @@ class Data{
      */
     protected $tableName;
 
+    protected $hasMany = array();
+
+    protected $hasOne = array();
+
+    protected $belongsTO = array();
+
+
     /**
      * get single object of a data class
      * @param string $className
@@ -210,6 +230,11 @@ class Data{
         }
 
         return $this->pdo;
+    }
+
+    protected function tableName( $name ){
+        $config = c( 'db' );
+        return $config['tablePrefix'] . $name;
     }
 
     /**
@@ -264,8 +289,8 @@ class Data{
         return $this->initPdo()->exec( 'update `' . $this->tableName . '` set ' . substr( $tmp , 0 , -1 ) . ' where ' . $where );
     }
 
-    protected function delete( $where , $limit = '0,1' ){
-        return $this->initPdo()->exec( 'delete * from `' . $this->tableName . '` where ' . $where . ' ' . $limit );
+    public function delete( $where , $limit = '1' ){
+        return $this->initPdo()->exec( 'delete from `' . $this->tableName . '` where ' . $where . ' limit ' . $limit );
     }
 
     /**
@@ -273,7 +298,8 @@ class Data{
      * @return array
      */
     public function readOne( $where ){
-        return $this->initPdo()->query( 'select * from `' . $this->tableName . '` where ' . $where . ' limit 0,1' )->fetch( PDO::FETCH_ASSOC );
+        $result = $this->initPdo()->query( 'select * from `' . $this->tableName . '` where ' . $where . ' limit 0,1' );
+        if( $result ) return $result->fetch( PDO::FETCH_ASSOC );
     }
 
     /**
@@ -282,6 +308,10 @@ class Data{
      */
     public function read( $where , $order = '' , $limit = '' ){
         return $this->initPdo()->query( 'select * from `' . $this->tableName . '` where ' . $where . ' ' . $order . ' ' . $limit )->fetchAll( PDO::FETCH_ASSOC );
+    }
+
+    public function exec( $sql ){
+        return $this->initPdo()->query( $sql )->fetchAll( PDO::FETCH_ASSOC );
     }
 
     public function count( $where = '1=1' ){

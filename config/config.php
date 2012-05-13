@@ -6,4 +6,10 @@ return array(
         'password' => 'patrick',
         'tablePrefix' => 'ew_',
     ),
+
+    'weibo' => array(
+        'appKey' => 3378977054,
+        'secretKey' => 'c0c3e93126439a890c92460113d683ad',
+        'callback' => '/index.php?m=weibo&a=callback',
+    ),
 );

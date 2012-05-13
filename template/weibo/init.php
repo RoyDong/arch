@@ -108,8 +108,8 @@
 				<li>
 					<a href=""><span class="icon moreWindows"></span>帐户属性设置</a>
 					<ul class="sub expand">
-						<li><a href="userlist.html" class="current"><span class="icon table small"></span>查看操作员列表</a></li>
-						<li><a href="adduser.html"><span class="icon userAdd small"></span>增加操作员</a></li>
+						<li><a href="userlist.html"><span class="icon table small"></span>查看操作员列表</a></li>
+						<li><a href="adduser.html" class="current"><span class="icon userAdd small"></span>增加操作员</a></li>
 					</ul>
 				</li>
                                 <li>
@@ -132,6 +132,7 @@
 
 		<!-- Toparea -->
 		<div class="topArea">
+
 
 			<!-- notification bar -->
 			<div class="notificationBar">
@@ -159,56 +160,32 @@
 		<!-- mainContent start  -->	
 		<div id="mainContent">
 
-			<h1 class="heading g12">编辑操作员信息</h1>
+			<h1 class="heading g12">增加管理微博</h1>
 
 			<div class="fullCol">
 				<!-- Widget -->
 		        <div class="widget">
 		            <div class="title">
-		                <h4><span class="icon magic"></span>编辑操作员信息</h4>
+		                <h4><span class="icon magic"></span>添加新管理微博</h4>
 		                <a href="#" class="minimize">Minimize</a>
 		            </div>
 		                	
 		            <div class="content">
-		            	<form class="form wizzard" action="<?php echo $this->createUrl( 'user' , 'edit' );?>" method="post" id="signupForm">
+		            	<form class="form wizzard" action="" id="signupForm">
 		            		<ul>
-                                <li class="lastest">
-                                    <div class="label oneFourth"><label for="text">邮箱</label></div>
-                                    <div class="input threeFourth"><?php echo $user->email;?></div>
-                                   <div class="clear"></div>
-                                </li>
-                                <li class="lastest">
-                                    <div class="label oneFourth"><label for="text">名字</label></div>
-                                    <div class="input threeFourth"><input type="text" id="username" name="username" value="<?php echo $user->username;?>"/></div>
-                                    <div class="clear"></div>
-                                </li>
                                 <li>
-                                    <div class="label oneFourth"><label for="text">密码</label></div>
-                                    <div class="input threeFourth"><input type="text" id="password" name="password" value="<?php echo $user->password?>"/></div>
-                                   <div class="clear"></div>
-                                </li>
-                                <li class="lastest">
-                                    <div class="label oneFourth"><label for="text">公司</label></div>
-                                    <div class="input threeFourth"><input type="text" id="name" name="name" /></div>
+                                    <div class="label oneFourth"><label for="text" style="color: red;">您还未绑定任何微博账号！</label></div>
                                     <div class="clear"></div>
-                                </li>
-                                <li class="lastest">
-                                    <div class="label oneFourth"><label for="text">部门</label></div>
-                                    <div class="input threeFourth"><input type="text" id="name" name="name" /></div>
-                                   <div class="clear"></div>
-                                </li>
-                                 <li>
-                                    <div class="label oneFourth"><label for="text">手机</label></div>
-                                    <div class="input threeFourth"><input type="text" id="name" name="name" /></div>
-                                   <div class="clear"></div>
                                 </li>
 				            	</fieldset>
 					                <li class="lastest">
-                                        <input type="submit" class="button gray" value="确认提交" />
+					                	<button type="button" class="button gray" onclick="location.href='<?php echo $url;?>'">开始绑定微博</button>
 					                </li>
 				            	</fieldset>
-				            </ul>	  
+				            </ul>
+
 				          </form>
+		    					
 		            </div>
 		                   
 		        </div>
