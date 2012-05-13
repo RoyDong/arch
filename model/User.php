@@ -116,7 +116,7 @@ class User {
 
             if( !$token ) return null;
 
-            $this->data['onuth_token_id'] = $token['oauth_token_id'];
+            $this->data['oauth_token_id'] = $token['oauth_token_id'];
             $this->save();
         }
 
@@ -128,6 +128,7 @@ class User {
         if( empty( $list ) ) return false;
         $api = $this->getDefaultWeiboApi();
         $data = array();
+
 
         foreach( $list as $token ){
             $user = $api->user( $token['sns_user_id'] );
@@ -146,8 +147,8 @@ class User {
         Data::getInstance( 'UserOAuthToken' )
                 ->delete( '`user_id`="'.$this->data['id'].'" and `oauth_token_id`="'.$tokenId.'"' );
 
-        if( $tokenId === $this->data['oauth_token_id'] ){
-            $this->data['oauth_token_id'] = 0;
+        if( $tokenId == $this->data['oauth_token_id'] ){
+            $this->data['oauth_token_id'] = '';
             $this->save();
         }
     }

@@ -193,9 +193,9 @@
                                                 <td align="center" valign="middle">未知</td>
                                                 <td align="center" valign="middle">Level 0</td>
                                                 <td colspan="2" align="center" valign="middle" class="center" width="7%">
-                                                    <a onclick="location.href=<?php echo $this->createUrl('weibo','delete',array('tokenId'=>$tokenId));?>" href="#">解除绑定</a>
+                                                    <a onclick="location.href='<?php echo $this->createUrl('weibo','delete',array('tokenId'=>$tokenId));?>'" href="#">解除绑定</a>
                                                     <?php if( $this->user->oauth_token_id != $tokenId ):?>
-                                                    <a onclick="location.href=<?php echo $this->createUrl('weibo','default',array('tokenId'=>$tokenId));?>" href="#">设置未默认</a>
+                                                    <a onclick="location.href='<?php echo $this->createUrl('weibo','default',array('tokenId'=>$tokenId));?>'" href="#">设为默认</a>
                                                     <?php endif;?>
                                                 </td>
                                             </tr>
@@ -213,7 +213,8 @@
                                     </table>
 
                                     <div class="clear"></div>  
-                                    <div class="green-black"><span class="disabled"> <  上一页</span><span class="current">1</span><a href="#?page=2">2</a><a href="#?page=3">3</a><a href="#?page=4">4</a><a href="#?page=5">5</a><a href="#?page=6">6</a><a href="#?page=7">7</a>...<a href="#?page=199">199</a><a href="#?page=200">200</a><a href="#?page=2">下一页  > </a></div>
+                                    <div style="display: none;" class="green-black"><span class="disabled"> <  上一页</span><span class="current">1</span><a href="#?page=2">2</a><a href="#?page=3">3</a><a href="#?page=4">4</a><a href="#?page=5">5</a><a href="#?page=6">6</a><a href="#?page=7">7</a>...<a href="#?page=199">199</a><a href="#?page=200">200</a><a href="#?page=2">下一页  > </a>
+                                    </div>
                                 </div>
 
                             </div>

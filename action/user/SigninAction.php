@@ -6,7 +6,7 @@ class SigninAction extends Action {
         if( $this->method === 'post' ){
             $user = User::loadByEmail( $this->post( 'email') );
             if( $user && $user->signin( $this->post( 'password' ) ) ){
-                $this->redirect( $this->createUrl( 'user' , 'weibo' ) );
+                $this->redirect( $this->createUrl( 'weibo' , 'main' ) );
             }
             setcookie( 'flash' , 'wrong email or password' );
             $this->redirect( $this->createUrl( 'user' , 'signin' ) );

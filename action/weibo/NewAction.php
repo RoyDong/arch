@@ -11,8 +11,9 @@ class NewAction extends Action {
     }
 
     public function execute(){
+        $this->layout = false;
         $oauth = WeiboApi::bindOauth( $this->user->id );
-
-        var_dump( $oauth->getAuthorizeURL() );
+        $this->render( 'weibo/init' , array( 'url' => $oauth->getAuthorizeURL() ) );
+        return;
     }
 }
