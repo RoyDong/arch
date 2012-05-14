@@ -18,7 +18,6 @@ class NewAction extends Action{
             $this->redirect( $this->createUrl( 'user' , 'edit' , array( 'id' => $user->id ) ) );
         }
 
-        $this->layout = false;
         $this->render( 'user/new' );
     }
 }

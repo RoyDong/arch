@@ -214,13 +214,8 @@ class RestProtocol {
      * @ignore
      */
     public static function build_http_query_multi( $params ){
-        if( !$params )
-            return '';
-
+        if( !$params ) return '';
         uksort( $params , 'strcmp' );
-
-        $pairs = array( );
-
         self::$boundary = $boundary = uniqid( '------------------' );
         $MPboundary = '--' . $boundary;
         $endMPboundary = $MPboundary . '--';

@@ -8,7 +8,7 @@ CREATE TABLE `ew_oauth_token` (
   `updated_at` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `sns` (`sns`,`sns_user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `ew_user` (
@@ -21,7 +21,7 @@ CREATE TABLE `ew_user` (
   `updated_at` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `ew_user_oauth_token` (

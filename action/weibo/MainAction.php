@@ -5,10 +5,14 @@
 
 class MainAction extends Action {
 
+    public function filter(){
+        if( empty( $this->user ) )
+            $this->redirect( $this->createUrl( 'user' , 'signin' ) );
+    }
+
     public function execute(){
         $api = $this->user->getDefaultWeiboApi();
         if( empty( $api ) ){
-            $this->layout = false;
             $oauth = WeiboApi::bindOauth( $this->user->id );
             $this->render( 'weibo/init' , array( 'url' => $oauth->getAuthorizeURL() ) );
             return;
@@ -16,10 +20,9 @@ class MainAction extends Action {
 
         $page = $this->get( 'page' , 1 );
 
-        $this->layout = false;
         $this->render( 
                 'weibo/main' , 
-                array( 
+                array(
                     'friendsTimeline' => $api->friendsTimeline( $page ),
                     'page' => $page,
                 ));

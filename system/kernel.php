@@ -78,16 +78,14 @@ abstract class Action{
 
     protected $layout = 'main';
 
-    protected $user = null;
+    protected $user;
 
-    public $method = 'get';
+    public $method;
 
     public function __construct(){
         session_start();
         setcookie( 'flash' , '' );
-        if( $_SERVER['REQUEST_METHOD'] === 'POST' ) 
-            $this->method = 'post';
-
+        $this->method = strtolower( $_SERVER['REQUEST_METHOD'] );
         if( isset( $_SESSION['user_id'] ) && $_SESSION['user_id'] > 0 )
             $this->user = User::load( $_SESSION['user_id'] );
     }
@@ -96,7 +94,7 @@ abstract class Action{
 
     public function filter(){}
 
-    public function error( $message , $code ){
+    public function error( $message ){
         var_dump( $message );
         //require ROOT_DIR . '/public/error.html';
     }
@@ -282,9 +280,8 @@ class Data{
     public function update( $data , $where ){
         $tmp = '';
 
-        foreach( $data as $column => $value ){
+        foreach( $data as $column => $value )
             $tmp .= '`' . $column . '`="' . $value . '",';
-        }
 
         return $this->initPdo()->exec( 'update `' . $this->tableName . '` set ' . substr( $tmp , 0 , -1 ) . ' where ' . $where );
     }
