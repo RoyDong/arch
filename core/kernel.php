@@ -4,22 +4,14 @@
  */
 
 function main(){
-    $class = ucfirst( $_GET[ 'a' ] ? $_GET[ 'a' ] : 'main'  ) . 'Action';
-    $file = ROOT_DIR . '/actions' . $_GET[ 'p' ] . $class . '.php';
-
-    if( file_exists( $file ) ){
-        require $file;
-        $action = new $class;
-
-        try{
-            $action->init();
-            $action->filter();
-            $action->execute();
-        }catch( Exception $e ){
-            $action->error( $e->getMessage() , $e->getCode() );
-        }
-    }else
-        require ROOT_DIR . '/public/404.html';
+    $action = router();
+    try{
+        $action->init();
+        $action->filter();
+        $action->execute();
+    }catch( Exception $e ){
+        $action->error( $e->getMessage() );
+    }
 }
 
 function c( $key = 'all' , $filename = 'config' ){
@@ -36,7 +28,7 @@ function c( $key = 'all' , $filename = 'config' ){
         return $config[ $filename ][ $key ];
 }
 
-function t( $text , $params = array( ) , $package = 'core' ){
+function t( $text , $params = array( ) , $package = 'main' ){
     static $i18n = array( );
 
     if( empty( $i18n[ $package ] ) ){
@@ -67,23 +59,106 @@ function t( $text , $params = array( ) , $package = 'core' ){
     return $sentence;
 }
 
+function router(){
+    $url = $_SERVER['REQUEST_URI'];
+
+    if( empty( $_GET['p'] ) ){
+        $url = preg_replace( '/^\/index.php/' , '' , $url );
+        $url = parse_url( $url );
+        $url = pathinfo( $url['path'] );
+
+        if( empty( $url['dirname'] ) || $url['dirname']  === '/' )
+            $path = '/';
+        else
+            $path = $url['dirname'] . '/';
+
+        $class = empty( $url['filename'] ) ? 'Main' : ucfirst( $url['filename'] );
+        $format = empty( $url['extension'] ) ? 'html' : $url['extension'];
+    }else{
+        $path = $_GET['p'];
+        $class = empty( $_GET['a'] ) ? 'Main' : ucfirst( $_GET['a'] );
+        $format = empty( $_GET['f'] ) ? 'html' : $_GET['f'];
+    }
+
+
+    $class .= 'Action';
+    $file = ROOT_DIR . '/action' . $path . $class . '.php';
+
+    if( file_exists( $file ) )
+        require_once $file;
+    else
+        require ROOT_DIR . '/public/404.html';
+
+    return new $class( $path , $class , $format );
+}
+
 function __autoload( $className ){
     $type = substr( $className , -4 );
     $dir = $type === 'Data' ? '/data/' : '/model/';
     $file = ROOT_DIR . $dir . $className . '.php';
 
-    if( file_exists( $file ) ) require $file;
+    if( file_exists( $file ) ) require_once $file;
 }
 
 abstract class Action{
 
     protected $layout = 'main';
 
+    protected $user;
+
+    protected $path;
+
+    protected $name;
+
+    protected $format;
+
+    protected $method;
+    
+    protected $url;
+    
+    protected $moduleList;
+    
+    protected $role;
+    
+    public function __construct( $path , $name , $format ){
+        session_start();
+        setcookie( 'flash' , '' );
+        date_default_timezone_set( c('timezone') );
+        $this->method = strtolower( $_SERVER['REQUEST_METHOD'] );
+        $this->url = $_SERVER['REQUEST_URI'];
+        $this->path = $path;
+        $this->name = $name;
+        $this->format = $format;
+        $this->hideScriptName = c( 'hideScriptName' );
+        
+        if (isset($_SESSION['user_id']) && $_SESSION['user_id'] > 0) {
+          $this->user = User::load($_SESSION['user_id']);
+          if ($this->user->data['status'] == 1) { 
+            $this->role = Role::load($this->user->ez_role_id);
+            $operationList = $this->role->getOperationList();
+            $subList = array();
+            $ultimateRoleList = array();
+            for ($index = 0; $index < count($operationList); $index++) {
+              $operation = $operationList[$index];
+              if ($operation['parent_id'] == 0 && $index != 0) {
+                array_push($ultimateRoleList, $subList);
+                $subList = array();
+                array_push($subList, $operation);
+              } else {
+                array_push($subList, $operation);
+              }
+            }
+            array_push($ultimateRoleList, $subList);
+            $this->moduleList = $ultimateRoleList;
+          }
+        }
+    }
+
     public function init(){}
 
     public function filter(){}
 
-    public function error( $message , $code ){
+    public function error( $message ){
         require ROOT_DIR . '/template/error.php';
     }
 
@@ -98,7 +173,7 @@ abstract class Action{
     protected function get( $key , $default = null ){
         if( empty( $_GET[ $key ] ) ){
             if( $default === null )
-                throw new KernelException( t( 'param missing' , array( 'param' => $key ) ) , KernelException::PARAM_MISSING );
+                throw new Exception( t( 'param missing' , array( 'param' => $key ) ) );
 
             return $default;
         }
@@ -115,38 +190,55 @@ abstract class Action{
     protected function post( $key , $default = null ){
         if( empty( $_POST[ $key ] ) ){
             if( $default === null )
-                throw new KernelException( t( 'param missing' , array( 'param' => $key ) ) , KernelException::PARAM_MISSING );
+                throw new Exception( t( 'param missing' , array( 'param' => $key ) ) );
 
             return $default;
         }
-
-        return trim( $_POST[ $key ] );
+        $value = $_POST[$key];
+        
+        return is_array($value) ? $value : trim($value);
     }
 
     protected function tpl( $path ){
-        return ROOT_DIR . '/template/' . $path . '.php';
+        if( $path[0] != '/' ) $path = $this->path . $path;
+        return ROOT_DIR . '/template' . $path . '.php';
     }
 
     protected function render( $contentTemplatePath , $data = array() ){
         extract( $data );
-        require $this->layout ? $this->tpl( 'layouts/' . $this->layout ) : $this->tpl( $contentTemplatePath );
+        require $this->layout ? $this->tpl( '/layout/' . $this->layout ) : $this->tpl( $contentTemplatePath );
     }
 
-    protected function redirect( $url ){
-        header( 'Location ' . $url );
+    protected function redirect(  $route , $params = array() ){
+        header( 'Location: ' . $this->url( $route , $params ) );
+        exit;
     }
 
-    protected function createUrl( $url ){
-        if( strncmp( $url , 'http://' , 7 ) === 0 )
-            return $url;
+    protected function cookie( $key ){
+        return empty( $_COOKIE[ $key ] ) ? '' : $_COOKIE[ $key ];
+    }
 
-        return '/' . $url;
+    protected function url( $route , $params = array() ){
+        if( strncmp( $route , 'http://' , 7 ) === 0 ) return $route;
+
+        if( $params ){
+            $query = '';
+            foreach( $params as $key => $value )
+                $query .= '&' . $key . '=' . $value;
+            $query[0] = '?';
+            $route .= $query;
+        }
+
+        if( $route[0] != '/' ) $route = $this->path . $route;
+        if( $this->hideScriptName ) return $route;
+        return '/index.php' . $route;
     }
 }
 
 /**
  * @author Roy
  */
+
 class Data{
 
     /**
@@ -179,7 +271,7 @@ class Data{
      */
     public static function getInstance( $name ){
         if( empty( self::$pool[ $name ] ) ){
-            $class = $name . 'Model';
+            $class = $name . 'Data';
             self::$pool[ $name ] = new $class;
         }
 
@@ -194,9 +286,15 @@ class Data{
         if( empty( $this->pdo ) ){
             $config = c( 'db' );
             $this->pdo = new PDO( $config[ 'dsn' ] , $config[ 'username' ] , $config[ 'password' ] );
+            $this->tableName = $config[ 'tablePrefix' ] . $this->tableName;
         }
 
         return $this->pdo;
+    }
+
+    protected function tableName( $name ){
+        $config = c( 'db' );
+        return $config['tablePrefix'] . $name;
     }
 
     /**
@@ -209,7 +307,7 @@ class Data{
             $config = c( 'cache' );
 
             if( !$this->cache->pconnect( $config[ 'host' ] , $config[ 'port' ] ) )
-                throw new KernelException( t( 'cache disconnected' ) , KernelException::CACHE_DISCONNECTED );
+                throw new Exception( t( 'cache server disconnected' ) );
         }
 
         return $this->cache;
@@ -244,36 +342,52 @@ class Data{
     public function update( $data , $where ){
         $tmp = '';
 
-        foreach( $data as $column => $value ){
+        foreach( $data as $column => $value )
             $tmp .= '`' . $column . '`="' . $value . '",';
-        }
 
         return $this->initPdo()->exec( 'update `' . $this->tableName . '` set ' . substr( $tmp , 0 , -1 ) . ' where ' . $where );
     }
 
-    protected function delete( $where , $limit = '0,1' ){
-        return $this->initPdo()->exec( 'delete * from `' . $this->tableName . '` where ' . $where . ' ' . $limit );
+    public function deleteOne( $where , $limit = '1' ){
+        return $this->initPdo()->exec( 'delete from `' . $this->tableName . '` where ' . $where . ' limit ' . $limit );
+    }
+
+    public function delete( $where ){
+        return $this->initPdo()->exec( 'delete from `' . $this->tableName . '` where ' . $where );
     }
 
     /**
      * get data from sql db
      * @return array
      */
-    public function read( $where ){
-        return $this->initPdo()->query( 'select * from `' . $this->tableName . '` where ' . $where . ' limit 0,1' )->fetch( PDO::FETCH_ASSOC );
+    public function readOne( $where ){
+        $result = $this->initPdo()->query( 'select * from `' . $this->tableName . '` where ' . $where . ' limit 0,1' );
+        if( $result ) return $result->fetch( PDO::FETCH_ASSOC );
     }
 
     /**
      * find multi rows from sql db
      * @return array
      */
-    public function readAll( $where , $order = '' , $limit = '' ){
-        return $this->initPdo()->query( 'select * from `' . $this->tableName . '` where ' . $where . ' ' . $order . ' ' . $limit )->fetchAll( PDO::FETCH_ASSOC );
+    public function read( $where , $order = '' , $limit = '' ){
+        if( $order ) $order = ' order by ' .$order;
+        if( $limit ) $limit = ' limit ' . $limit;
+
+        $result = $this->initPdo()
+                ->query( 'select * from `' . $this->tableName . '` where ' . $where . $order . $limit );
+        if( $result ) return $result->fetchAll( PDO::FETCH_ASSOC );
+        return array();
+    }
+
+    public function exec( $sql ){
+        $result = $this->initPdo()->query( $sql );
+        if( $result ) return $result->fetchAll( PDO::FETCH_ASSOC );
+        return array();
     }
 
     public function count( $where = '1=1' ){
         $row = $this->initPdo()->query( 'select count(*) c from `' . $this->tableName . '` where ' . $where )->fetch( PDO::FETCH_ASSOC );
-        return $row[ 'c' ];
+        return $row['c'];
     }
 
     public function isExist( $column , $value ){

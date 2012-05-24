@@ -1,16 +1,19 @@
 <?php
-return array
-(
-    'db' => array
-    (
-        'dsn' => 'mysql:host=' .SAE_MYSQL_HOST_M .';port=' . SAE_MYSQL_PORT . ';dbname=' . SAE_MYSQL_DB . ';charset=utf8' ,
-        'username' => SAE_MYSQL_USER ,
-        'password' => SAE_MYSQL_PASS ,
-    ) ,
+return array(
+    'db' => array(
+        'dsn' => 'mysql:host=127.0.0.1;port=3306;dbname=enterpriseweibo;charset=utf8',
+        'username' => 'root',
+        'password' => '111lll',
+        'tablePrefix' => 'ew_',
+    ),
 
-    'admin' => array
-    (
-        'username' => 'roy' ,
-        'password' => 'ghb^2-4ac' ,
-    ) ,
+    'weibo' => array(
+        'appKey' => 3378977054,
+        'secretKey' => 'c0c3e93126439a890c92460113d683ad',
+        'callback' => '/weibo/callback',
+    ),
+
+    'hideScriptName' => true,
+
+    'timezone' => 'Asia/Shanghai',
 );
