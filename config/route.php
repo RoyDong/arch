@@ -5,6 +5,9 @@
  */
 
 return array(
+    '_int' => 'show',
+
+    'show' => true,
     'user' => array(
         'show' => true,
         'edit' => true,

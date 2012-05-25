@@ -9,14 +9,19 @@ class Command {
         if( strncmp( $command , '/index.php/' , 10 ) === 0 )
             $command = substr( $command , 11 );
 
-        $this->text = $command;
         $url = parse_url( $command );
         $path = explode( '/' , $url['path'] );
+        $node = c( 'all' , 'route' );
+        
+        foreach( $path as $nodeName ){
+
+        }
 
 
-        $u = new \lib\User;
+        $this->text = $command;
+    }
 
-        $u->setEmail();
+    private function checkPath(){
 
     }
 }
