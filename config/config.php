@@ -13,7 +13,5 @@ return array(
         'callback' => '/weibo/callback',
     ),
 
-    'hideScriptName' => true,
-
     'timezone' => 'Asia/Shanghai',
 );
