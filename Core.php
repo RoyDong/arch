@@ -50,9 +50,9 @@ class Core {
     private static $command;
 
     public static function gogogo(){
-        $command = new \core\Command( $_SERVER['REQUEST_URI'] );
+        $command = new \core\Command;
         $command->exec();
-        self::$command = $command;
+        Core::$command = $command;
     }
 
     public static function url( $url , $params = array() ){
@@ -70,15 +70,10 @@ class Core {
             $url = $url . $query;
         }
 
-        if( self::$command->hasScriptName )
-            $url = 'index.php/' . $url;
-
-        return '/' . $url;
-    }
-
-    public static function redirect( $url , $params ){
-        header( 'Location: ' . self::url( $url , $params ) );
-        exit;
+        if( Core::$command->hasScriptName )
+            return '/index.php/' . $url;
+        else
+            return '/' . $url;
     }
 
     public static function autoload( $className ){

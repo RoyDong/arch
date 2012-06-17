@@ -1,10 +1,8 @@
 <?php
 return array(
-    'db' => array(
-        'dsn' => 'mysql:host=127.0.0.1;port=3306;dbname=enterpriseweibo;charset=utf8',
-        'username' => 'root',
-        'password' => '111lll',
-        'tablePrefix' => 'ew_',
+    'defaultRoute' => array(
+        'path' => '/',
+        'action' => 'index',
     ),
 
     'weibo' => array(
@@ -14,4 +12,9 @@ return array(
     ),
 
     'timezone' => 'Asia/Shanghai',
+
+    'admin' => array(
+        'username' => 'roy',
+        'password' => '111lll'
+    ),
 );

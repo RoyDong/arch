@@ -3,8 +3,11 @@ namespace lib;
 
 class User {
 
-
     public function setEmail(){
-        var_dump( c('db') );
+
+    }
+
+    public static function auth(){
+        
     }
 }
