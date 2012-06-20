@@ -10,7 +10,7 @@ class Mysql {
      * singleton object
      * @var array
      */
-    private static $pool;
+    private static $pool = array();
 
     /**
      * mysql database connection
