@@ -18,25 +18,19 @@ class Mysql {
     protected $pdo;
 
     /**
-     * redis database connection
-     * @var Redis
-     */
-    protected $cache;
-
-    /**
      * get single object of a data class
      * @param string $className
      * @return Model 
      */
-    public static function getInstance( $dsn , $username , $password ){
+    public static function instance( $dsn , $username , $password ){
         if( empty( Mysql::$pool[ $dsn ] ) )
             Mysql::$pool[ $dsn ] = new Mysql( $dsn , $username , $password );
 
         return Mysql::$pool[ $dsn ];
     }
 
-    public function __construct( $dsn , $username , $password ){
-        $this->pdo = new Mysql( $dsn , $username , $password );
+    private function __construct( $dsn , $username , $password ){
+        $this->pdo = new PDO( $dsn , $username , $password );
     }
 
     /**
@@ -100,7 +94,7 @@ class Mysql {
         if( $order ) $order = ' ORDER BY ' .$order;
         if( $limit ) $limit = ' LIMIT ' . $limit;
 
-        $result = $this->pdo()->query( 
+        $result = $this->pdo->query( 
                 'SELECT * FROM `'.$table.'` WHERE '.$where.$order.$limit );
 
         if( $result ) return $result->fetchAll( PDO::FETCH_ASSOC );

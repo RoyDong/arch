@@ -14,9 +14,8 @@ class Command {
     );
 
     public function __construct(){
-        $route = c( 'defaultRoute' );
-        $this->path = empty( $_GET['p'] ) ?  $route['path'] : $_GET['p'];
-        $this->name = empty( $_GET['n'] ) ? $route['action'] : $_GET['n'];
+        $this->path = empty( $_GET['p'] ) ?  '/' : $_GET['p'];
+        $this->name = empty( $_GET['n'] ) ? 'index' : $_GET['n'];
 
         if( isset($_POST['a']) && in_array( $_POST['a'] , Command::$actions ) )
             $this->action = $_POST['a'];
@@ -25,29 +24,30 @@ class Command {
     }
 
     public function __get( $name ){
-        return $this->$name;
+        if( isset( $this->$name ) ) return $this->$name;
     }
 
     public function exec(){
         $class = '\\action'. str_replace( '/' , '\\' , $this->path )
                 .ucfirst( $this->name );
 
-        $classFile = ROOT_DIR.'/action'.$this->path.$this->name.'.php';
+        $file = ROOT_DIR.'/action'.$this->path.$this->name.'.php';
 
-        if(file_exists( $classFile )){
-            require $classFile;
-            $action = new $class;
-            try{
-                session_start();
-                date_default_timezone_set( c('timezone') );
-                $action->init();
-                $action->{$this->action}();
-                $action->end();
-            }catch( Exception $e ){
-                $action->error( $e->getMessage() , $e->getCode() );
+        if( file_exists( $file ) ){
+            require $file;
+            $action = new $class( $this->action );
+            if( method_exists( $action , $this->action ) ){
+                try{
+                    session_start();
+                    $action->init();
+                    $action->{$this->action}();
+                    $action->end();
+                }catch( Exception $e ){
+                    $action->error( $e->getMessage() , $e->getCode() );
+                }
+                return;
             }
-        }else{
-            echo 'not found';
         }
+        echo 'not found';
     }
 }

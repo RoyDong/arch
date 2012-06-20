@@ -8,6 +8,8 @@ class User {
     }
 
     public static function auth(){
-        
+        if( isset( $_SESSION['user'] ) ){
+            
+        }
     }
 }
