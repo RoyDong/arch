@@ -5,22 +5,22 @@ class Command {
 
     private $path;
 
-    private $name;
-
     private $action;
 
-    private static $actions = array(
-        'create' , 'read' , 'update' , 'delete'
+    private $method;
+
+    private static $methods = array(
+        'get' , 'put' , 'post' , 'delete'
     );
 
     public function __construct(){
         $this->path = empty( $_GET['p'] ) ?  '/' : $_GET['p'];
-        $this->name = empty( $_GET['n'] ) ? 'index' : $_GET['n'];
+        $this->action = empty( $_GET['a'] ) ? 'index' : $_GET['n'];
 
-        if( isset($_POST['a']) && in_array( $_POST['a'] , Command::$actions ) )
-            $this->action = $_POST['a'];
+        if( isset($_POST['m']) && in_array( $_POST['m'] , Command::$methods ) )
+            $this->method = $_POST['m'];
         else
-            $this->action = 'read';
+            $this->method = 'get';
     }
 
     public function __get( $name ){
@@ -29,18 +29,18 @@ class Command {
 
     public function exec(){
         $class = '\\action'. str_replace( '/' , '\\' , $this->path )
-                .ucfirst( $this->name );
+                .ucfirst( $this->action );
 
-        $file = ROOT_DIR.'/action'.$this->path.$this->name.'.php';
+        $file = ROOT_DIR.'/action'.$this->path.ucfirst( $this->action ).'.php';
 
         if( file_exists( $file ) ){
             require $file;
-            $action = new $class( $this->action );
-            if( method_exists( $action , $this->action ) ){
+            $action = new $class( $this->method );
+            if( method_exists( $action , $this->method ) ){
                 try{
                     session_start();
                     $action->init();
-                    $action->{$this->action}();
+                    $action->{$this->method}();
                     $action->end();
                 }catch( Exception $e ){
                     $action->error( $e->getMessage() , $e->getCode() );

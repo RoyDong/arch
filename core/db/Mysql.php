@@ -81,7 +81,7 @@ class Mysql {
      * get data from sql db
      * @return array
      */
-    public function readOne( $table , $where ){
+    public function findOne( $table , $where ){
         $result = $this->pdo->query( 'SELECT * FROM `'.$table.'` where '.$where.' LIMIT 0,1' );
         if( $result ) return $result->fetch( PDO::FETCH_ASSOC );
     }
@@ -90,7 +90,7 @@ class Mysql {
      * find multi rows from sql db
      * @return array
      */
-    public function read( $table , $where , $order = '' , $limit = '' ){
+    public function find( $table , $where , $order = '' , $limit = '' ){
         if( $order ) $order = ' ORDER BY ' .$order;
         if( $limit ) $limit = ' LIMIT ' . $limit;
 

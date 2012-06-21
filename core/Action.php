@@ -3,10 +3,10 @@ namespace core;
 
 abstract class Action {
 
-    protected $action;
+    protected $method;
 
-    public function __construct( $action ){
-        $this->action = $action;
+    public function __construct( $method ){
+        $this->method = $method;
     }
 
     public function init(){}
