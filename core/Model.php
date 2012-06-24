@@ -17,6 +17,9 @@ class Model {
      */
     protected $pdo;
 
+
+    protected $table = '';
+
     /**
      * get single object of a data class
      * @param string $className
@@ -29,9 +32,9 @@ class Model {
         return Model::$pool[ $dsn ];
     }
 
-    private function __construct( $dsn , $username , $password ){
-        $config = c( 'dev' , 'db' );
-        $this->pdo = self::pdo( 
+    public function __construct(){
+        $config = c( ENV , 'db' );
+        $this->pdo = Model::pdo( 
                 $config['dsn'] , 
                 $config['username'] , 
                 $config['password'] );
@@ -46,7 +49,7 @@ class Model {
      * @param array $data
      * @return int 
      */
-    public function insert( $table , $data ){
+    public function insert( $data ){
         $columns = $values = array();
 
         foreach( $data as $column => $value ){
@@ -54,7 +57,7 @@ class Model {
             $values[] = $value;
         }
 
-        $this->pdo->exec( 'INSERT INTO `'.$table.'` (`'
+        $this->pdo->exec( 'INSERT INTO `'.$this->table.'` (`'
                 .implode( '`,`' , $columns ).'`) VALUES ("'
                 .implode( '","' , $values ).'")' );
 
@@ -66,31 +69,31 @@ class Model {
      * @param array $data
      * @param string $where
      */
-    public function update( $table ,$data , $where ){
+    public function update( $data , $where ){
         $sql = '';
 
         foreach( $data as $column => $value )
             $sql .= '`'.$column.'`="'.$value.'",';
 
-        return $this->pdo->exec( 'UPDATE `'.$table. '` SET '
+        return $this->pdo->exec( 'UPDATE `'.$this->table. '` SET '
                 .substr( $sql , 0 , -1 ).' WHERE '.$where );
     }
 
-    public function deleteOne( $table , $where , $limit = '1' ){
-        return $this->pdo->exec( 'DELETE FROM `'.$table.'` WHERE '
+    public function deleteOne( $where , $limit = '1' ){
+        return $this->pdo->exec( 'DELETE FROM `'.$this->table.'` WHERE '
                 .$where.' LIMIT '.$limit );
     }
 
-    public function delete( $table , $where ){
-        return $this->pdo->exec( 'DELETE FROM `'.$table.'` WHERE '.$where );
+    public function delete( $where ){
+        return $this->pdo->exec( 'DELETE FROM `'.$this->table.'` WHERE '.$where );
     }
 
     /**
      * get data from sql db
      * @return array
      */
-    public function findOne( $table , $where ){
-        $result = $this->pdo->query( 'SELECT * FROM `'.$table.'` where '.$where.' LIMIT 0,1' );
+    public function findOne( $where ){
+        $result = $this->pdo->query( 'SELECT * FROM `'.$this->table.'` where '.$where.' LIMIT 0,1' );
         if( $result ) return $result->fetch( PDO::FETCH_ASSOC );
     }
 
@@ -98,19 +101,19 @@ class Model {
      * find multi rows from sql db
      * @return array
      */
-    public function find( $table , $where , $order = '' , $limit = '' ){
+    public function find( $where , $order = '' , $limit = '' ){
         if( $order ) $order = ' ORDER BY ' .$order;
         if( $limit ) $limit = ' LIMIT ' . $limit;
 
         $result = $this->pdo->query( 
-                'SELECT * FROM `'.$table.'` WHERE '.$where.$order.$limit );
+                'SELECT * FROM `'.$this->table.'` WHERE '.$where.$order.$limit );
 
         if( $result ) return $result->fetchAll( PDO::FETCH_ASSOC );
         return array();
     }
 
     public function count( $where = '1=1' ){
-        $result = $this->pdo->query( 'SELECT count(*) c FROM `'.$table.'` WHERE '.$where );
+        $result = $this->pdo->query( 'SELECT count(*) c FROM `'.$this->table.'` WHERE '.$where );
 
         if( $result ){
             $count = $result->fetch( pdo::fetch_assoc );
