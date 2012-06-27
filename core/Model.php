@@ -16,8 +16,6 @@ class Model {
 
     protected $table = '';
 
-    protected $data = array();
-
     /**
      * get single object of a data class
      * @param string $className
@@ -30,16 +28,11 @@ class Model {
         return Model::$pool[ $dsn ];
     }
 
-    private function __construct( $table ){
-        $this->table = $table;
-        $this->initPdo();
-    }
-
-    protected function initPdo(){
+    public function __construct(){
         $config = c( ENV , 'db' );
-        $this->pdo = Model::pdo(
-                $config['dsn'],
-                $config['username'],
+        $this->pdo = Model::pdo( 
+                $config['dsn'] , 
+                $config['username'] , 
                 $config['password'] );
     }
 
@@ -106,8 +99,7 @@ class Model {
      * @return array
      */
     public function findOne( $where ){
-        $result = $this->pdo->query( 
-                'SELECT * FROM `'.$this->table.'` where '.$where.' LIMIT 0,1' );
+        $result = $this->pdo->query( 'SELECT * FROM `'.$this->table.'` where '.$where.' LIMIT 0,1' );
         if( $result ) return $result->fetch( PDO::FETCH_ASSOC );
     }
 
@@ -119,7 +111,7 @@ class Model {
         if( $order ) $order = ' ORDER BY ' .$order;
         if( $limit ) $limit = ' LIMIT ' . $limit;
 
-        $result = $this->pdo->query(
+        $result = $this->pdo->query( 
                 'SELECT * FROM `'.$this->table.'` WHERE '.$where.$order.$limit );
 
         if( $result ) return $result->fetchAll( PDO::FETCH_ASSOC );
@@ -127,8 +119,7 @@ class Model {
     }
 
     public function count( $where = '1=1' ){
-        $result = $this->pdo->query( 
-                'SELECT count(*) c FROM `'.$this->table.'` WHERE '.$where );
+        $result = $this->pdo->query( 'SELECT count(*) c FROM `'.$this->table.'` WHERE '.$where );
 
         if( $result ){
             $count = $result->fetch( PDO::fetch_assoc );
