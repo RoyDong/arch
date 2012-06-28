@@ -4,6 +4,9 @@ namespace action;
 class Index extends \core\Action {
 
     public function get(){
-        $user = \model\User::instance($id);
+        $user = new \model\User;
+
+        $a = isEmail($_GET['e']);
+        var_dump($a);
     }
 }

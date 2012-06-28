@@ -1,21 +1,22 @@
-
                      Diary
                         --Footprints of life.
                 
-    An internet product for users to write their diaries.
+Description:
+
+    An internet product for people to write their diaries.
+
 
 Functions:
 
-    A welcome page for users to sign in, contians a form
-for sigin in, a form for register, and a brif introduction.
+    A welcome page for users to sign in, contians a form for sigin in, a form
+for register, and a brif introduction.
 
-    Settings, provides user to configure their personal
-settings: name, email, password, sex, birthday.
+    Settings, provides users to configure their personal settings: name, email, 
+password, sex, birthday.
 
-    Write, users can write a diary, save text content,
-current time to the database.
+    Write, users can write a diary, save text content, current time to the 
+database.
 
-    View, a list of diaries sort by time.  user can only 
-read their own diaries.
+    View, a list of diaries sort by time. User can only read their own diaries.
 
     A navigate.

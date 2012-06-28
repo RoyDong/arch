@@ -19,6 +19,6 @@ abstract class Action {
     }
 
     public function error( $message , $code = 0 ){
-
+        echo $message.' '.$code;
     }
 }

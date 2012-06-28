@@ -23,15 +23,15 @@ class Mysql extends \core\Model {
      * @return Model 
      */
     public static function pdo( $dsn , $username , $password ){
-        if( empty( Model::$pool[ $dsn ] ) )
-            Model::$pool[ $dsn ] = new PDO( $dsn , $username , $password );
+        if( empty( Mysql::$pool[ $dsn ] ) )
+            Mysql::$pool[ $dsn ] = new \PDO( $dsn , $username , $password );
 
-        return Model::$pool[ $dsn ];
+        return Mysql::$pool[ $dsn ];
     }
 
     protected function init(){
         $config = c( ENV , 'db' );
-        $this->pdo = Model::pdo( 
+        $this->pdo = Mysql::pdo(
                 $config['dsn'] , 
                 $config['username'] , 
                 $config['password'] );
@@ -117,7 +117,7 @@ class Mysql extends \core\Model {
         if( $order ) $order = ' ORDER BY ' .$order;
         if( $limit ) $limit = ' LIMIT ' . $limit;
 
-        $result = $this->pdo->query( 
+        $result = $this->pdo->query(
                 'SELECT * FROM `'.$this->table.'` WHERE '.$where.$order.$limit );
 
         if( $result ) return $result->fetchAll( PDO::FETCH_ASSOC );
@@ -125,7 +125,7 @@ class Mysql extends \core\Model {
     }
 
     public function count( $where = '1=1' ){
-        $result = $this->pdo->query( 
+        $result = $this->pdo->query(
                 'SELECT count(*) c FROM `'.$this->table.'` WHERE '.$where );
 
         if( $result ){

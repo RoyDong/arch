@@ -1,13 +1,19 @@
 <?php
 namespace model;
 
-class User extends \core\Model {
+class User extends \core\model\Mysql {
 
     protected $table = 'user';
 
-    private $data;
+    private static $schema = array(
+        'id' , 'email' , 'password' , 'salt' , 'ctime' , 'utime'
+    );
 
-    public function __construct( $data = array() ){
-        $this->data = $data;
+    public function schema(){
+        return User::$schema;
+    }
+
+    public function setEmail( $email ){
+
     }
 }

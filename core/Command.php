@@ -27,6 +27,10 @@ class Command {
         if( isset( $this->$name ) ) return $this->$name;
     }
 
+    public function methods(){
+        return Command::$methods;
+    }
+
     public function exec(){
         $class = '\\action'. str_replace( '/' , '\\' , $this->path )
                 .ucfirst( $this->action );

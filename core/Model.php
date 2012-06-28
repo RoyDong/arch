@@ -13,11 +13,18 @@ abstract class Model {
     protected $isNew = false;
 
     public function __construct(){
-        if( empty($this->table ) ) throw new Exception( 'table is not specified');
+        if( empty($this->table ) ) 
+            throw new \Exception( 'table is not specified');
+
         $this->init();
     }
 
-    function init();
+    public function __get( $name ){
+        if( isset($this->data[$name]) )
+            return $this->data[$name];
+    }
 
-    function load( $data );
+    abstract protected function init();
+
+    abstract protected function load( $data );
 }

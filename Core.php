@@ -45,14 +45,18 @@ function t( $text , $params = array() , $package = 'main' ){
     return $sentence;
 }
 
-class Core {
+function isEmail( $email ){
+    return preg_match( '/^[\w\._\-]+@[\w\.\-_]+[\w\-_]\.[a-z]{2,4}$/i' , $email );
+}
+
+class App {
 
     private static $command;
 
-    public static function gogogo(){
+    public static function run(){
         $command = new \core\Command;
         $command->exec();
-        Core::$command = $command;
+        App::$command = $command;
     }
 
     public static function url( $url , $params = array() ){
@@ -70,10 +74,7 @@ class Core {
             $url = $url . $query;
         }
 
-        if( Core::$command->hasScriptName )
-            return '/index.php/' . $url;
-        else
-            return '/' . $url;
+        return '/' . $url;
     }
 
     public static function autoload( $className ){
@@ -82,4 +83,4 @@ class Core {
     }
 }
 
-spl_autoload_register( 'Core::autoload' );
+spl_autoload_register( 'App::autoload' );
