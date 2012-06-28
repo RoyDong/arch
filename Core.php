@@ -82,6 +82,6 @@ function t( $text , $params = array() , $package = 'main' ){
 }
 
 function isEmail( $email ){
-    return preg_match( '/^[\w\._\-]+@[\w\.\-_]+[\w\-_]\.[a-z]{2,4}$/i' , $email );
+    return preg_match( '/^[\w\._\-]+@[\w\.\-_]*[\w\-_]\.[a-z]{2,4}$/i' , $email );
 }
 

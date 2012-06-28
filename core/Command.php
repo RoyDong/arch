@@ -10,7 +10,7 @@ class Command {
     private $method;
 
     private static $methods = array(
-        'get' , 'put' , 'post' , 'delete'
+        'get' , 'set' , 'add' , 'del'
     );
 
     public function __construct(){
