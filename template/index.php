@@ -1,1 +1,1 @@
-<?php echo 'index';?>aaa
+<a href="#"><?php echo 'index';?></a>

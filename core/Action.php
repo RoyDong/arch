@@ -7,6 +7,10 @@ abstract class Action {
 
     protected $layout = 'main';
 
+    protected $scripts = array();
+
+    protected $stylesheets = array();
+
     public function __construct( $method ){
         $this->method = $method;
     }
@@ -21,34 +25,6 @@ abstract class Action {
     }
 
     protected function render( $_data = array() , $_tpl = null ){
-        $_content = $this->getRenderContent( $_data , $_tpl );
-        ob_end_clean();
-
-        if( $this->layout )
-            require ROOT_DIR.'/template/layout/'.$this->layout.'.php';
-        else
-            echo $_content;
-    }
-
-    protected function renderJson( $_data = array() , $_tpl = null ){
-        $_content = $this->getRenderContent( $_data , $_tpl );
-
-        if( $this->layout ){
-            require ROOT_DIR.'/template/layout/'.$this->layout.'.php';
-            $output = ob_get_contents();    
-            ob_end_clean();
-        }else
-            $output = $_content;
-
-        header( 'Content-Type: application/x-json' );
-        echo json_encode(array(
-            'scripts' => array(),
-            'styleSheets' => array(),
-            'data' => $output
-        ));
-    }
-
-    private function getRenderContent( $_data = array() , $_tpl = null ){
         if( empty($_tpl) )
             $_tpl .= \App::$command->path.\App::$command->action.'.php';
         else if( $_tpl[0] === '/' )
@@ -61,25 +37,45 @@ abstract class Action {
         extract( $_data );
         ob_start();
         require $_tpl;
-        $content = ob_get_contents();
-        ob_clean();
-        return $content;
+        $_content = ob_get_contents();
+        ob_end_clean();
+
+        if( $this->layout )
+            require ROOT_DIR.'/template/layout/'.$this->layout.'.php';
+        else
+            echo $_content;
     }
 
-    protected function addScripts( $scripts ){
-
+    protected function addScripts( $urls ){
+        foreach( $urls as $url ) $this->addScript( $url );
     }
 
-    protected function addScript(){
-
+    protected function addScript( $url ){
+        array_push( $this->scripts , $url );
     }
 
-    protected function addStyleSheet(){
-
+    protected function addStylesheet( $url ){
+        array_push( $this->stylesheets , $url );
     }
 
-    protected function addStyleSheets(){
+    protected function addStylesheets( $urls ){
+        foreach( $urls as $url ) $this->addStylesheet( $url );
+    }
 
+    protected function getScripts(){
+        $html = '';
+        foreach( $this->scripts as $url )
+            $html .= '<script type="text/javascript" src="'.$url.'"></script>';
+
+        return $html;
+    }
+
+    protected function getStylesheets(){
+        $html = '';
+        foreach( $this->stylesheets as $url )
+            $html .= '<link href="'.$url.'" type="text/css" rel="stylesheet" />';
+
+        return $html;
     }
 
     public function error( $message , $code = 0 ){
