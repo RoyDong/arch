@@ -37,17 +37,24 @@ class Mysql extends \core\Model {
                 $config['password'] );
     }
 
-    public function load( $data ){
-        if( is_array( $data ) ){
+    public function load( $data , $query = true ){
+        if( $query ){
+            if( is_array($data) ){
+                $where = '1=1';
+                foreach( $data as $key => $value )
+                    $where .= ' AND `'.$key.'`="'.$value.'"';
+            }else
+                $where = '`id=`"'.$data.'"';
+
+            $data = $this->findOne( $where );
+            if( empty( $data ) ) return false;
             $this->data = $data;
-            $this->isNew = empty( $data['id'] );
+            $this->isNew = false;
             return true;
         }
-
-        $data = $this->findOneByPk( (string)$id );
-        if( empty( $data ) ) return false;
+        
         $this->data = $data;
-        $this->isNew = false;
+        $this->isNew = empty( $data['id'] );
         return true;
     }
 
@@ -120,7 +127,7 @@ class Mysql extends \core\Model {
         $result = $this->pdo->query(
                 'SELECT * FROM `'.$this->table.'` WHERE '.$where.$order.$limit );
 
-        if( $result ) return $result->fetchAll( PDO::FETCH_ASSOC );
+        if( $result ) return $result->fetchAll( \PDO::FETCH_ASSOC );
         return array();
     }
 
@@ -129,7 +136,7 @@ class Mysql extends \core\Model {
                 'SELECT count(*) c FROM `'.$this->table.'` WHERE '.$where );
 
         if( $result ){
-            $count = $result->fetch( pdo::fetch_assoc );
+            $count = $result->fetch( \PDO::fetch_assoc );
             return $count['c'];
         }
 

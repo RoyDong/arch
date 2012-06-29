@@ -27,10 +27,6 @@ class Command {
         if( isset( $this->$name ) ) return $this->$name;
     }
 
-    public function methods(){
-        return Command::$methods;
-    }
-
     public function exec(){
         $class = '\\action'. str_replace( '/' , '\\' , $this->path )
                 .ucfirst( $this->action );
@@ -42,7 +38,6 @@ class Command {
             $action = new $class( $this->method );
             if( method_exists( $action , $this->method ) ){
                 try{
-                    session_start();
                     $action->init();
                     $action->{$this->method}();
                     $action->end();

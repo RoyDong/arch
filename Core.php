@@ -2,12 +2,11 @@
 
 class App {
 
-    private static $command;
+    public static $command;
 
     public static function run(){
-        $command = new \core\Command;
-        $command->exec();
-        App::$command = $command;
+        App::$command = new \core\Command;
+        App::$command->exec();
     }
 
     public static function url( $url , $params = array() ){

@@ -9,7 +9,7 @@ class User extends \core\model\Mysql {
         'id' , 'email' , 'password' , 'salt' , 'ctime' , 'utime'
     );
 
-    public function schema(){
+    public function getSchema(){
         return User::$schema;
     }
 
@@ -17,6 +17,14 @@ class User extends \core\model\Mysql {
         if( $this->isExist( $email ) ) return false;
         $this->data['email'] = $email;
         return true;
+    }
+
+    public function checkPassword( $password ){
+        if( empty( $this->data['id'] ) )
+            throw new \Exception( 'must load data first' );
+
+        return $this->data['password'] === 
+                $this->hashPassword( $password , $this->data['salt'] );
     }
 
     public function setPassword( $password ){
