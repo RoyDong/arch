@@ -5,7 +5,7 @@ class Index extends \core\Action {
 
     public function get(){
 
-        $this->render();
+        $this->renderJson();
     }
 
     public function set(){

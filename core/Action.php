@@ -40,7 +40,7 @@ abstract class Action {
         }else
             $output = $_content;
 
-        header( 'Content-Type: text/applictions-json' );
+        header( 'Content-Type: application/x-json' );
         echo json_encode(array(
             'scripts' => array(),
             'styleSheets' => array(),
