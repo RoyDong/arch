@@ -15,12 +15,13 @@ class Command {
 
     public function __construct(){
         $this->path = empty( $_GET['p'] ) ?  '/' : $_GET['p'];
-        $this->action = empty( $_GET['a'] ) ? 'index' : $_GET['n'];
+        $this->action = empty( $_GET['a'] ) ? 'index' : $_GET['a'];
 
         if( isset($_POST['m']) && in_array( $_POST['m'] , Command::$methods ) )
             $this->method = $_POST['m'];
         else
             $this->method = 'get';
+
     }
 
     public function __get( $name ){
@@ -31,22 +32,18 @@ class Command {
         $class = '\\action'. str_replace( '/' , '\\' , $this->path )
                 .ucfirst( $this->action );
 
-        $file = ROOT_DIR.'/action'.$this->path.ucfirst( $this->action ).'.php';
-
-        if( file_exists( $file ) ){
-            require $file;
-            $action = new $class( $this->method );
-            if( method_exists( $action , $this->method ) ){
-                try{
-                    $action->init();
-                    $action->{$this->method}();
-                    $action->end();
-                }catch( Exception $e ){
-                    $action->error( $e->getMessage() , $e->getCode() );
-                }
-                return;
-            }
+        $action = new $class( $this->method );
+        try{
+            $action->init();
+            $action->{$this->method}();
+            $action->end();
+        }catch( Exception $e ){
+            $action->error( $e->getMessage() , $e->getCode() );
         }
-        echo 'not found';
+
+    }
+
+    public function createCSRF(){
+
     }
 }

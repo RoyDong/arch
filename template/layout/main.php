@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>aa</title>
-        <?php echo $this->getStylesheets();?>
-        <?php echo $this->getScripts();?>
+        <title><?php echo $this->title; ?></title>
+        <?php echo $this->getStylesheets(); ?>
+        <script type="text/javascript" src="/js/jquery.min.js"></script>
+        <?php echo $this->getScripts(); ?>
     </head>
     <body>
-    <?php echo $_content;?>
+        <?php echo $_content; ?>
     </body>
 </html>

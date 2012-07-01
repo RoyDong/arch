@@ -4,11 +4,9 @@ namespace action;
 class Index extends \core\Action {
 
     public function init(){
-        $this->addScript( 'http://code.jquery.com/jquery.min.js' );
     }
 
     public function get(){
-
         $this->render();
     }
 

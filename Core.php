@@ -31,9 +31,16 @@ class App {
         $file = ROOT_DIR .'/'. str_replace( '\\' , '/' , $className ) . '.php';
         if( file_exists( $file ) ) require $file;
     }
+
+    public static function shutdown(){
+        $e = error_get_last();
+        $message = $e['message'];
+        require ROOT_DIR.'/template/404.php';
+    }
 }
 
 spl_autoload_register( 'App::autoload' );
+register_shutdown_function( 'App::shutdown' );
 
 function c( $key = 'all' , $filename = 'config' ){
     static $config = array();

@@ -7,6 +7,8 @@ abstract class Action {
 
     protected $layout = 'main';
 
+    protected $title = '';
+
     protected $scripts = array();
 
     protected $stylesheets = array();
@@ -20,7 +22,7 @@ abstract class Action {
     public function end(){}
 
     protected function redirect(  $route , $params = array() ){
-        header( 'Location: ' . Core::url( $route , $params ) );
+        header( 'Location: ' . \App::url( $route , $params ) );
         exit;
     }
 
