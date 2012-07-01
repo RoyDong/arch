@@ -58,6 +58,21 @@ class Mysql extends \core\Model {
         return true;
     }
 
+    public function save(){
+        $this->data['utime'] = $_SERVER['REQUEST_TIME'];
+
+        if( $this->isNew ){
+            $this->data['ctime'] = $_SERVER['REQUEST_TIME'];
+            $id = $this->insert( $this->data );
+            if( $id > 0 ){
+                $this->data['id'] = $id;
+                $this->isNew = false;
+            }else
+                throw \Exception( 'can save data to db' );
+        }else
+            $this->update( $this->data , '`id`="'.$this->data['id'].'"' );
+    }
+
     public function findOneByPk($id){
         return $this->findOne( '`id`="'.$id.'"' );
     }

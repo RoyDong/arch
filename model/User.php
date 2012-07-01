@@ -37,16 +37,6 @@ class User extends \core\model\Mysql {
         return (bool)$this->findOne( '`email`="'.$email.'"' );
     }
 
-    public function save(){
-        $this->data['utime'] = $_SERVER['REQUEST_TIME'];
-
-        if( $this->isNew ){
-            $this->data['ctime'] = $_SERVER['REQUEST_TIME'];
-            $this->insert( $this->data );
-        }else
-            $this->update( $this->data , '`id`="'.$this->data['id'].'"' );
-    }
-
     private function hashPassword( $password , $salt ){
         return sha1( $password.$salt );
     }
