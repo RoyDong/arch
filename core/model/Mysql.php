@@ -151,7 +151,7 @@ class Mysql extends \core\Model {
                 'SELECT count(*) c FROM `'.$this->table.'` WHERE '.$where );
 
         if( $result ){
-            $count = $result->fetch( \PDO::fetch_assoc );
+            $count = $result->fetch( \PDO::FETCH_ASSOC );
             return $count['c'];
         }
 

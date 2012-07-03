@@ -21,7 +21,6 @@ class Command {
             $this->method = $_POST['m'];
         else
             $this->method = 'get';
-
     }
 
     public function __get( $name ){
