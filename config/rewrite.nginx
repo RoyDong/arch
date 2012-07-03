@@ -1,0 +1,15 @@
+
+--------------dev---------------
+
+server_name dev.host.com
+
+rewrite '^/signin' /index.dev.php?p=/user/&a=signin last;
+rewrite '^/signup' /index.dev.php?p=/user/&a=signup last;
+
+
+--------------production--------
+
+server_name host.com
+
+rewrite '^/signin' /index.php?p=/user/&a=signin last;
+rewrite '^/signup' /index.php?p=/user/&a=signup last;
