@@ -7,12 +7,12 @@ class UserProfile extends \core\model\Mysql {
 
     private static $sexes = array( 'm' , 'f' );
 
-    private static $schema = array(
+    private static $columns = array(
         'uid' , 'name' , 'sex' , 'birth' , 'ctime' , 'utime'
     );
 
-    public function getSchema(){
-        return UserProfile::$schema;
+    public function getColumns(){
+        return UserProfile::$columns;
     }
 
     public function getSexes(){

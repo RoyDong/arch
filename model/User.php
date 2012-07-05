@@ -5,12 +5,12 @@ class User extends \core\model\Mysql {
 
     protected $table = 'user';
 
-    private static $schema = array(
+    private static $columns = array(
         'id' , 'email' , 'password' , 'salt' , 'ctime' , 'utime'
     );
 
-    public function getSchema(){
-        return User::$schema;
+    public function getColumns(){
+        return User::$columns;
     }
 
     public function setEmail( $email ){

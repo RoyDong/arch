@@ -5,11 +5,11 @@ class Diary extends \core\model\Mysql {
 
     protected $table = 'diary';
 
-    private static $schema = array(
+    private static $columns = array(
         'id' , 'text' , 'uid' , 'ctime' , 'utime'
     );
 
-    public function getSchema(){
-        return Diary::$schema;
+    public function getColumns(){
+        return Diary::$columns;
     }
 }
