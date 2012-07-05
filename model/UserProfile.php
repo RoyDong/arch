@@ -24,12 +24,10 @@ class UserProfile extends \core\model\Mysql {
     }
 
     public function setSex( $sex ){
-        if( in_array( $sex , UserProfile::$sexes ) )
-            $this->data['sex'] = $sex;
+        if( in_array( $sex , UserProfile::$sexes ) ) $this->data['sex'] = $sex;
     }
 
     public function setBirth( $birth ){
-        if( $birth < $_SERVER['time'] );
-            $this->data['birth'] = $birth;
+        $this->data['birth'] = $birth;
     }
 }
