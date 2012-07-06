@@ -13,7 +13,7 @@ abstract class Model {
     protected $isNew = true;
 
     public function __construct(){
-        if( empty($this->table ) ) 
+        if( empty( $this->table ) ) 
             throw new \Exception( 'table is not specified');
 
         $this->init();

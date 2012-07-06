@@ -1,7 +1,7 @@
 <?php
-namespace action;
+namespace lib;
 
-abstract class Action extends \core\Action {
+class Action extends \core\Action {
     
     protected function auth(){
         if(!isset( $_SESSION['user'] ))

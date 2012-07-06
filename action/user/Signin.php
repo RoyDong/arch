@@ -3,10 +3,6 @@ namespace action\user;
 
 class Signin extends \core\Action {
 
-    public function init(){
-
-    }
-
     public function set(){
         $email = trim( $_POST['email'] );
 

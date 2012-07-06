@@ -1,7 +1,7 @@
 <?php
 namespace core;
 
-abstract class Action {
+class Action {
 
     protected $method;
 
@@ -9,7 +9,7 @@ abstract class Action {
 
     protected $title = '';
 
-    protected $scripts = array();
+    protected $javascripts = array();
 
     protected $stylesheets = array();
 
@@ -26,7 +26,7 @@ abstract class Action {
         exit;
     }
 
-    protected function render( $_data = array() , $_tpl = null ){
+    protected function render( $data = array() , $_tpl = null ){
         if( empty($_tpl) )
             $_tpl .= \App::$command->path.\App::$command->action.'.php';
         else if( $_tpl[0] === '/' )
@@ -36,7 +36,7 @@ abstract class Action {
 
         $_tpl = ROOT_DIR.'/template'.$_tpl;
 
-        extract( $_data );
+        extract( $data );
         ob_start();
         require $_tpl;
         $content = ob_get_contents();
@@ -48,25 +48,25 @@ abstract class Action {
             echo $content;
     }
 
-    protected function addScripts( $urls ){
-        foreach( $urls as $url ) $this->addScript( $url );
+    protected function javascript( $url ){
+        if( is_array( $url ) )
+            foreach( $url as $v )
+                array_push( $this->javascripts , $v );
+        else
+            array_push( $this->javascripts , $url );
     }
 
-    protected function addScript( $url ){
-        array_push( $this->scripts , $url );
+    protected function stylesheet( $url ){
+        if( is_array( $url ) )
+            foreach( $url as $v )
+                array_push( $this->stylesheets , $v );
+        else
+            array_push( $this->stylesheets , $url );
     }
 
-    protected function addStylesheet( $url ){
-        array_push( $this->stylesheets , $url );
-    }
-
-    protected function addStylesheets( $urls ){
-        foreach( $urls as $url ) $this->addStylesheet( $url );
-    }
-
-    protected function getScripts(){
+    protected function getJavascripts(){
         $html = '';
-        foreach( $this->scripts as $url )
+        foreach( $this->javascripts as $url )
             $html .= '<script type="text/javascript" src="'.$url.'"></script>';
 
         return $html;
