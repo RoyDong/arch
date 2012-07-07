@@ -12,8 +12,9 @@ class Log {
         $this->fp = fopen( $this->file , 'a' );
     }
 
-    public function add( $text ){
-        fwrite( $this->fp , microtime( true ).' '.$text."\n" );
+    public function add( $text , $environment = 'development' ){
+        if( ENVIRONMENT === $environment )
+            fwrite( $this->fp , microtime( true ).' '.$text."\n" );
     }
 
     public function __destruct(){

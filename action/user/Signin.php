@@ -14,7 +14,7 @@ class Signin extends \core\Action {
             $user = new \model\User;
             if( $user->load( array( 'email' => $email ) ) ){
                 $user->checkPassword( $_POST['password'] );
-                \App::$log->add( 'user '.$emial.' signin success' );
+                \App::$log->add( 'user '.$email.' signin success' );
                 var_dump( $user );
             }else
                 echo 'user not found';
