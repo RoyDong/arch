@@ -4,6 +4,8 @@ class App {
 
     public static $command;
 
+    private static $config = array();
+
     public static function run(){
         App::$command = new \core\Command;
         App::$command->exec();
@@ -37,24 +39,22 @@ class App {
         $message = $e['message'];
         require ROOT_DIR.'/template/404.php';
     }
+
+    public static function config( $key = 'all' , $filename = 'config' ){
+        if( empty( App::$config[ $filename ] ) ){
+            $file = ROOT_DIR . '/config/' . $filename . '.php';
+            if( file_exists( $file ) ) App::$config[ $filename ] = require $file;
+        }
+
+        if( $key === 'all' ) return App::$config[ $filename ];
+
+        if( isset( App::$config[ $filename ][ $key ] ) )
+            return App::$config[ $filename ][ $key ];
+    }
 }
 
 spl_autoload_register( 'App::autoload' );
 register_shutdown_function( 'App::shutdown' );
-
-function c( $key = 'all' , $filename = 'config' ){
-    static $config = array();
-
-    if( empty( $config[ $filename ] ) ){
-        $file = ROOT_DIR . '/config/' . $filename . '.php';
-        if( file_exists( $file ) ) $config[ $filename ] = require $file;
-    }
-
-    if( $key === 'all' ) return $config[ $filename ];
-
-    if( isset( $config[ $filename ][ $key ] ) )
-        return $config[ $filename ][ $key ];
-}
 
 function t( $text , $params = array() , $package = 'main' ){
     static $i18n = array();

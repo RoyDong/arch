@@ -30,7 +30,7 @@ class Mysql extends \core\Model {
     }
 
     protected function init(){
-        $config = c( ENV , 'db' );
+        $config = App::config( ENV , 'db' );
         $this->pdo = Mysql::pdo(
                 $config['dsn'] , 
                 $config['username'] , 
