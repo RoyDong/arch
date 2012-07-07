@@ -25,7 +25,7 @@ class Mongo extends \core\Model {
     }
 
     protected function init(){
-        $config = App::config( ENV , 'db' );
+        $config = \App::config( ENVIRONMENT , 'db' );
         $this->pdo = Model::pdo(
                 $config['dsn'] , 
                 $config['username'] , 

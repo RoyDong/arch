@@ -30,7 +30,7 @@ class Mysql extends \core\Model {
     }
 
     protected function init(){
-        $config = App::config( ENV , 'db' );
+        $config = \App::config( ENVIRONMENT , 'db' );
         $this->pdo = Mysql::pdo(
                 $config['dsn'] , 
                 $config['username'] , 
@@ -127,7 +127,7 @@ class Mysql extends \core\Model {
      */
     public function findOne( $where ){
         $result = $this->pdo->query( 
-                'SELECT * FROM `'.$this->table.'` where '.$where.' LIMIT 0,1' );
+                'SELECT * FROM `'.$this->table.'` WHERE '.$where.' LIMIT 0,1' );
         if( $result ) return $result->fetch( \PDO::FETCH_ASSOC );
     }
 

@@ -4,9 +4,12 @@ class App {
 
     public static $command;
 
+    public static $log;
+
     private static $config = array();
 
     public static function run(){
+        App::$log = new \core\Log;
         App::$command = new \core\Command;
         App::$command->exec();
     }
@@ -85,6 +88,10 @@ function t( $text , $params = array() , $package = 'main' ){
     }
 
     return $sentence;
+}
+
+function dump( $var ){
+    
 }
 
 function isEmail( $email ){
