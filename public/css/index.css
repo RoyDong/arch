@@ -39,6 +39,7 @@ body{
     width: 320px;
     height: 390px;
     overflow: hidden;
+    -webkit-overflow-scrolling: initial;
 }
 
 #forms{
