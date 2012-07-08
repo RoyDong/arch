@@ -7,6 +7,6 @@
         <?php echo $this->getScripts(); ?>
     </head>
     <body>
-        <?php echo $_content; ?>
+        <?php echo $content; ?>
     </body>
 </html>

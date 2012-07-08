@@ -39,13 +39,13 @@ abstract class Action {
         extract( $_data );
         ob_start();
         require $_tpl;
-        $_content = ob_get_contents();
+        $content = ob_get_contents();
         ob_end_clean();
 
         if( $this->layout )
             require ROOT_DIR.'/template/layout/'.$this->layout.'.php';
         else
-            echo $_content;
+            echo $content;
     }
 
     protected function addScripts( $urls ){
