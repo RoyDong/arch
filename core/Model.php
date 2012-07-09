@@ -28,6 +28,10 @@ abstract class Model {
         $this->{'set'.ucfirst( $name )}( $value );
     }
 
+    public function getData(){
+        return $this->data;
+    }
+
     abstract protected function init();
 
     abstract protected function load( $data );

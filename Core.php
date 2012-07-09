@@ -91,10 +91,9 @@ function t( $text , $params = array() , $package = 'main' ){
 }
 
 function dump( $var ){
-    
+    file_put_contents( ROOT_DIR.'/log/debug.log' , var_export( $var , true ) . "\n\n" , FILE_APPEND );
 }
 
 function isEmail( $email ){
     return preg_match( '/^[\w\._\-]+@[\w\.\-_]*[\w\-_]\.[a-z]{2,4}$/i' , $email );
 }
-
