@@ -3,9 +3,9 @@ namespace core;
 
 class Log {
 
-    private $file;
+    protected $file;
 
-    private $fp;
+    protected $fp;
 
     public function __construct(){
         $this->file = ROOT_DIR.'/log/'.ENVIRONMENT.'.log';

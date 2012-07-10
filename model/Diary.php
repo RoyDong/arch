@@ -12,4 +12,12 @@ class Diary extends \core\model\Mysql {
     public function getColumns(){
         return Diary::$columns;
     }
+
+    public function setUid( $uid ){
+        $this->data['uid'] = $uid;
+    }
+
+    public function setText( $text ){
+        $this->data['text'] = $text;
+    }
 }

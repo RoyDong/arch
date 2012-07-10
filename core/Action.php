@@ -26,9 +26,9 @@ class Action {
         exit;
     }
 
-    protected function render( $data = array() , $_tpl = null ){
+    protected function render( $data = null , $_tpl = null ){
         if( empty($_tpl) )
-            $_tpl .= \App::$command->path.\App::$command->action.'.php';
+            $_tpl .= \App::$command->path.\App::$command->name.'.php';
         else if( $_tpl[0] === '/' )
             $_tpl .= $_tpl.'.php';
         else
@@ -36,7 +36,7 @@ class Action {
 
         $_tpl = ROOT_DIR.'/template'.$_tpl;
 
-        extract( $data );
+        if( $data ) extract( $data );
         ob_start();
         require $_tpl;
         $content = ob_get_contents();

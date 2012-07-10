@@ -3,11 +3,13 @@ namespace core;
 
 class Command {
 
-    private $path;
+    protected $action;
 
-    private $action;
+    protected $path;
 
-    private $method;
+    protected $name;
+
+    protected $method;
 
     private static $methods = array(
         'get' , 'set' , 'add' , 'del'
@@ -15,7 +17,7 @@ class Command {
 
     public function __construct(){
         $this->path = empty( $_GET['p'] ) ?  '/' : $_GET['p'];
-        $this->action = empty( $_GET['a'] ) ? 'index' : $_GET['a'];
+        $this->name = empty( $_GET['n'] ) ? 'index' : $_GET['n'];
 
         if( isset($_POST['m']) && in_array( $_POST['m'] , Command::$methods ) )
             $this->method = $_POST['m'];
@@ -29,9 +31,10 @@ class Command {
 
     public function exec(){
         $class = '\\action'. str_replace( '/' , '\\' , $this->path )
-                .ucfirst( $this->action );
+                .ucfirst( $this->name );
 
         $action = new $class( $this->method );
+        \App::$action = $action;
         try{
             $action->init();
             $action->{$this->method}();
@@ -39,7 +42,6 @@ class Command {
         }catch( Exception $e ){
             $action->error( $e->getMessage() , $e->getCode() );
         }
-
     }
 
     public function createCSRF(){

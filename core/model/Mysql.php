@@ -68,7 +68,7 @@ class Mysql extends \core\Model {
                 $this->data['id'] = $id;
                 $this->isNew = false;
             }else
-                throw \Exception( 'can save data to db' );
+                throw \Exception( 'can not save data to db' );
         }else
             $this->update( $this->data , '`id`="'.$this->data['id'].'"' );
     }

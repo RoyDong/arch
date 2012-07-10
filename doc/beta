@@ -18,3 +18,29 @@ for register, and a brif introduction.
     View, list of diaries sort by time. User can only read their own diaries.
 
     A navigate.
+
+
+design:
+
+    index page:
+        
+        If not sign in, show sign in page. User can sign in with an existing 
+        account, or sign up a new account and auto sign in. If success redirect 
+        to diary page, if fail show the same page with error message.
+
+        If already signed in, show diary page.
+
+    profile page:
+        
+        Need sign in. Show user's information, edit user's information.
+
+    dairy page:
+
+        select a time line, show diaries writen before it, desc by writen time.
+        show 20 diaries at once, more will turn out by the scrolling of page.
+        While reaches 100 the first 50 will be removed from the page. the max 
+        num is 100.
+
+    write:
+        
+        a popup box.

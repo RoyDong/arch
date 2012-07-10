@@ -23,7 +23,7 @@ class User extends \core\model\Mysql {
         if( empty( $this->data['id'] ) )
             throw new \Exception( 'must load data first' );
 
-        return $this->data['password'] === 
+        return $this->data['password'] ===
                 $this->hashPassword( $password , $this->data['salt'] );
     }
 

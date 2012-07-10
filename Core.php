@@ -4,12 +4,20 @@ class App {
 
     public static $command;
 
+    public static $session;
+
     public static $log;
+
+    public static $action;
+
+    public static $message;
 
     private static $config = array();
 
     public static function run(){
         App::$log = new \core\Log;
+        App::$session = new \core\Session;
+        App::$message = new \core\Message;
         App::$command = new \core\Command;
         App::$command->exec();
     }

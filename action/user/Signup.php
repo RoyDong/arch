@@ -8,16 +8,11 @@ class Signup extends \core\Action {
     }
     
     public function add(){
-        $email = trim( $_POST['email'] );
-
-        if( isEmail( $email ) ){
-            $user = new \model\User;
-            if( $user->setEmail( $email ) )
-                $user->password =  $_POST['password'];
-
-            $user->save();
+        $user = \module\User::signup( $_POST['email'] , $_POST['password'] );
+        if( $user ){
+            $this->render( null , '/index' );
+        }else{
+            echo 'done';
         }
-
-        $this->redirect( $_SERVER['HTTP_REFERER'] );
     }
 }
