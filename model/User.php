@@ -21,7 +21,7 @@ class User extends \core\model\Mysql {
 
     public function checkPassword( $password ){
         if( empty( $this->data['id'] ) )
-            throw new \Exception( 'must load data first' );
+            throw new \Exception( 'empty user model' );
 
         return $this->data['password'] ===
                 $this->hashPassword( $password , $this->data['salt'] );
