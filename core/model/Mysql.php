@@ -68,7 +68,7 @@ class Mysql extends \core\Model {
                 $this->data['id'] = $id;
                 $this->isNew = false;
             }else
-                throw \Exception( 'can not save data to db' );
+                throw \Exception( 'can not insert data to db' );
         }else
             $this->update( $this->data , '`id`="'.$this->data['id'].'"' );
     }
@@ -108,7 +108,7 @@ class Mysql extends \core\Model {
         foreach( $data as $column => $value )
             $sql .= '`'.$column.'`="'.$value.'",';
 
-        return $this->pdo->exec( 'UPDATE `'.$this->table. '` SET '
+        return $this->pdo->exec( 'UPDATE `'.$this->table.'` SET '
                 .substr( $sql , 0 , -1 ).' WHERE '.$where );
     }
 
@@ -126,7 +126,7 @@ class Mysql extends \core\Model {
      * @return array
      */
     public function findOne( $where ){
-        $result = $this->pdo->query( 
+        $result = $this->pdo->query(
                 'SELECT * FROM `'.$this->table.'` WHERE '.$where.' LIMIT 0,1' );
         if( $result ) return $result->fetch( \PDO::FETCH_ASSOC );
     }

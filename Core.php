@@ -41,7 +41,7 @@ class App {
     }
 
     public static function autoload( $className ){
-        $file = ROOT_DIR .'/'. str_replace( '\\' , '/' , $className ) . '.php';
+        $file = ROOT_DIR.'/'.str_replace( '\\' , '/' , $className ).'.php';
         if( file_exists( $file ) ) require $file;
     }
 
@@ -53,7 +53,7 @@ class App {
 
     public static function config( $key = 'all' , $filename = 'config' ){
         if( empty( App::$config[ $filename ] ) ){
-            $file = ROOT_DIR . '/config/' . $filename . '.php';
+            $file = ROOT_DIR.'/config/'.$filename.'.php';
             if( file_exists( $file ) ) App::$config[ $filename ] = require $file;
         }
 
@@ -70,11 +70,11 @@ register_shutdown_function( 'App::shutdown' );
 function t( $text , $params = array() , $package = 'main' ){
     static $i18n = array();
 
-    if( empty( $i18n[ $package ] ) ){
-        $file = ROOT_DIR . '/i18n/' . $package . '.php';
+    if( empty( $i18n[$package] ) ){
+        $file = ROOT_DIR.'/i18n/'.$package.'.php';
 
         if( file_exists( $file ) )
-            $i18n[ $package ] = require $file;
+            $i18n[$package] = require $file;
         else
             return $text;
     }
@@ -87,9 +87,9 @@ function t( $text , $params = array() , $package = 'main' ){
         $keys = $replaces = array( );
 
         foreach( $params as $key => $value ){
-            $key = '{' . $key . '}';
+            $key = '{'.$key.'}';
             $keys[] = $key;
-            $replaces[ $key ] = $value;
+            $replaces[$key] = $value;
         }
 
         $sentence = str_replace( $keys , $replaces , $sentence );
