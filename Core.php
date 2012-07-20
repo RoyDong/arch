@@ -2,6 +2,8 @@
 
 class App {
 
+    public static $user;
+
     public static $command;
 
     public static $session;

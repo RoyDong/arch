@@ -1,7 +1,7 @@
 <?php
 namespace action\diary;
 
-class Write extends \core\Action {
+class Index extends \core\Action {
 
     protected $user;
 

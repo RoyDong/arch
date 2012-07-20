@@ -4,6 +4,9 @@ namespace action;
 class Index extends \core\Action {
 
     public function get(){
-        $this->render();
+        if( \module\User::current() )
+            $this->render();
+        else
+            $this->render( 'user/welcome' );
     }
 }

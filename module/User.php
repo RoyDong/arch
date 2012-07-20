@@ -5,28 +5,34 @@ class User {
 
     private static $pool = array();
 
+    private static $current;
+
     private $user;
 
     private $profile;
 
     public static function instance( $id ){
-        if( empty( User::$pool[$id] ) ){
-            $user = new \model\User;
-            if( $user->load( $id ) )
-                User::$pool[$id] = new User( $user );
-            else
-                return;
-        }
+        if( User::$pool[$id] ) return User::$pool[$id];
 
-        return User::$pool[$id];
+        $user = new \model\User;
+
+        if( $user->load( $id ) )
+            return User::$pool[$id] = new User( $user );
+    }
+
+    public static function current(){
+        if( User::$current ) return User::$current;
+        return User::$current = User::instance( \App::$session->userId );
     }
 
     public static function signin( $email , $password ){
         if( isEmail( $email ) ){
             $user = new \model\User;
             if( $user->load( array( 'email' => $email ) ) ){
-                if( $user->checkPassword( $password ) )
+                if( $user->checkPassword( $password ) ){
+                    \App::$session->userId = $user->id;
                     return User::$pool[$user->id] = new User( $user );
+                }
                 \App::$message->setError( 'password' , 'wrong password' );
             }else
                 \App::$message->setError( 'email' , 'email unexist' );
@@ -47,9 +53,10 @@ class User {
             if( $user->setEmail( $email ) ){
                 $user->password = $password;
                 $user->save();
+                \App::$session->userId = $user->id;
                 return User::$pool[$user->id] = new User( $user );
             }
-            \App::$message->setError( 'email' , 'email exsit' );
+            \App::$message->setError( 'email' , 'email exist' );
         }else
             \App::$message->setError( 'email' , 'wrong email' );
 

@@ -21,12 +21,23 @@ class Action {
 
     public function end(){}
 
-    protected function redirect(  $route , $params = array() ){
-        header( 'Location: ' . \App::url( $route , $params ) );
-        exit;
+    protected function redirect(  $route = '' , $params = array() ){
+        header( 'Location: '.\App::url( $route , $params ) );
     }
 
-    protected function render( $data = null , $_tpl = null ){
+    protected function render( $_tpl = null , $data = null ){
+        ob_start();
+        $this->renderPartial( $_tpl , $data );
+        $content = ob_get_contents();
+        ob_end_clean();
+
+        if( $this->layout )
+            require ROOT_DIR.'/template/layout/'.$this->layout.'.php';
+        else
+            echo $content;
+    }
+
+    protected function renderPartial( $_tpl = null , $data = null ){
         if( empty($_tpl) )
             $_tpl .= \App::$command->path.\App::$command->name.'.php';
         else if( $_tpl[0] === '/' )
@@ -35,17 +46,8 @@ class Action {
             $_tpl .= \App::$command->path.$_tpl.'.php';
 
         $_tpl = ROOT_DIR.'/template'.$_tpl;
-
         if( $data ) extract( $data );
-        ob_start();
         require $_tpl;
-        $content = ob_get_contents();
-        ob_end_clean();
-
-        if( $this->layout )
-            require ROOT_DIR.'/template/layout/'.$this->layout.'.php';
-        else
-            echo $content;
     }
 
     protected function javascript( $url ){
