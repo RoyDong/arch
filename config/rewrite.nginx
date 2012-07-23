@@ -3,14 +3,14 @@
 
 server_name dev.host.com
 
-rewrite '^/signin' /index.dev.php?n=signin last;
-rewrite '^/signup' /index.dev.php?n=user last;
-rewrite '^/write' /index.dev.php?n=diary last;
+rewrite '^/signin' /index.dev.php?n=signin break;
+rewrite '^/signup' /index.dev.php?n=user break;
+rewrite '^/write' /index.dev.php?n=diary break;
 
 --------------production--------
 
 server_name host.com
 
-rewrite '^/signin' /index.php?n=signin last;
-rewrite '^/signup' /index.php?n=user last;
-rewrite '^/write' /index.php?n=diary last;
+rewrite '^/signin' /index.php?n=signin break;
+rewrite '^/signup' /index.php?n=user break;
+rewrite '^/write' /index.php?n=diary break;
