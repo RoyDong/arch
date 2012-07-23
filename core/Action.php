@@ -37,13 +37,11 @@ class Action {
 
     protected function renderPartial( $_tpl = null , $data = null ){
         if( empty($_tpl) )
-            $_tpl .= \App::$command->path.\App::$command->name.'.php';
-        else if( $_tpl[0] === '/' )
-            $_tpl .= $_tpl.'.php';
-        else
-            $_tpl .= \App::$command->path.$_tpl.'.php';
+            $_tpl = \App::$command->path.\App::$command->name;
+        else if( $_tpl[0] !== '/' )
+            $_tpl = \App::$command->path.$_tpl;
 
-        $_tpl = ROOT_DIR.'/template'.$_tpl;
+        $_tpl = ROOT_DIR.'/template'.$_tpl.'.php';
         if( $data ) extract( $data );
         require $_tpl;
     }

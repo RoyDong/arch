@@ -12,12 +12,12 @@ class User {
     private $profile;
 
     public static function instance( $id ){
-        if( User::$pool[$id] ) return User::$pool[$id];
-
-        $user = new \model\User;
-
-        if( $user->load( $id ) )
-            return User::$pool[$id] = new User( $user );
+        if( empty( User::$pool[$id] ) ){
+            $user = new \model\User;
+            if( $user->load( $id ) )
+                return User::$pool[$id] = new User( $user );
+        }else
+            return User::$pool[$id];
     }
 
     public static function current(){

@@ -46,7 +46,6 @@ class Command {
         $action = new $class( $this->method );
         \App::$action = $action;
         try{
-            $action->init();
             $action->{$this->method}();
             $action->end();
         }catch( \Exception $e ){

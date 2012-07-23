@@ -3,8 +3,18 @@ namespace action;
 
 class Index extends \core\Action {
 
+    protected $user;
+
+    public function __construct( $method ){
+        $this->method = $method;
+        $this->user = \module\User::current();
+    }
+
     public function get(){
-        $this->render();
+        if( $this->user )
+            $this->render();
+        else
+            $this->render('welcome');
     }
 
     public function add(){
