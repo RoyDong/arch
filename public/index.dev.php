@@ -5,5 +5,5 @@ error_reporting( E_ALL );
 define( 'ENVIRONMENT' , 'development' );
 define( 'DEBUG' , isset( $_GET['debug'] ) );
 define( 'ROOT_DIR' , dirname( __DIR__ ) );
-require ROOT_DIR.'/Core.php';
+require ROOT_DIR.'/core.php';
 App::run();

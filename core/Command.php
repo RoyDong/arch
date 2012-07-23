@@ -30,7 +30,7 @@ class Command {
         else
             $this->method = 'get';
 
-        if( isset($_SERVER['HTTP_DATA_TYPE']) && 
+        if( isset($_SERVER['HTTP_DATA_TYPE']) &&
                 in_array( $_SERVER['HTTP_DATA_TYPE'] , Command::$dataTypes ) )
             $this->dataType = strtolower( $_SERVER['HTTP_DATA_TYPE'] );
     }

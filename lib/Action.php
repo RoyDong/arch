@@ -2,9 +2,11 @@
 namespace lib;
 
 class Action extends \core\Action {
+
+    protected $user;
     
-    protected function auth(){
-        if(!isset( $_SESSION['user'] ))
-            $this->redirect('');
+    public function __construct( $method ){
+        $this->method = $method;
+        $this->user = \module\User::current();
     }
 }

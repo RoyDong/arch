@@ -1,12 +1,15 @@
-<button onclick="ajax('add')">add</button>
-<button onclick="ajax('set')">set</button>
+<textarea id="text"></textarea>
+<button onclick="ajax()">write</button>
 <script>
-function ajax(m){
+function ajax(){
     $.ajax({
         headers: {'Data-Type': 'text'},
-        url: '/',
+        url: '/write',
         type: 'post',
-        data: {m: m},
+        data: {
+            m: 'add',
+            text: $('#text').val()
+        },
         success: function(data){
             console.log(data);
         },

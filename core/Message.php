@@ -14,7 +14,7 @@ class Message {
     }
 
     public function set( $key , $text , $type = 'notice' ){
-        if( is_array( $this->data[$type] ) )
+        if( isset( $this->data[$type] ) && is_array( $this->data[$type] ) )
             $this->data[$type][ $key ] = $text;
         else
             $this->data[$type] = array( $key => $text );

@@ -1,14 +1,7 @@
 <?php
 namespace action;
 
-class Index extends \core\Action {
-
-    protected $user;
-
-    public function __construct( $method ){
-        $this->method = $method;
-        $this->user = \module\User::current();
-    }
+class Index extends \lib\Action {
 
     public function get(){
         if( $this->user )

@@ -44,7 +44,7 @@ class Mysql extends \core\Model {
                 foreach( $data as $key => $value )
                     $where .= ' AND `'.$key.'`="'.$value.'"';
             }else
-                $where = '`id=`"'.$data.'"';
+                $where = '`id`="'.$data.'"';
 
             $data = $this->findOne( $where );
             if( empty( $data ) ) return false;

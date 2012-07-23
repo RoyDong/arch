@@ -1,7 +1,7 @@
 <?php
 namespace action;
 
-class User extends \core\Action {
+class User extends \lib\Action {
 
     public function get(){
 
@@ -12,7 +12,7 @@ class User extends \core\Action {
         if( $user ){
             $this->redirect();
         }else{
-            $this->render( '/welcome' );
+            $this->render( 'welcome' );
         }
     }
 
@@ -21,6 +21,6 @@ class User extends \core\Action {
         if( $user ){
             $this->redirect();
         }else
-            $this->render( '/welcome' );
+            $this->render( 'welcome' );
     }
 }
