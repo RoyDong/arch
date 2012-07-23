@@ -7,9 +7,10 @@ class Index extends \core\Action {
 
     public function init(){
         $this->user = \module\User::current();
-        if( !$this->user ){
-            $this->render( '/user/welcome' );
-        }
+    }
+
+    public function filter(){
+
     }
 
     public function add(){

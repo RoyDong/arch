@@ -25,9 +25,7 @@ class App {
     }
 
     public static function url( $url , $params = array() ){
-        if( strncmp( $url , 'http://' , 7 ) === 0 ||
-                strncmp( $url , 'https://' , 7 ) === 0 )
-            return $url;
+        if( strncmp( $url , 'http' , 4 ) === 0 ) return $url;
 
         if( is_array( $params ) ){
             $query = '';
@@ -49,17 +47,16 @@ class App {
 
     public static function shutdown(){
         $e = error_get_last();
-        $message = $e['message'];
-        require ROOT_DIR.'/template/404.php';
     }
 
-    public static function config( $key = 'all' , $filename = 'config' ){
+    public static function config( $key = '*' , $filename = 'config' ){
         if( empty( App::$config[ $filename ] ) ){
             $file = ROOT_DIR.'/config/'.$filename.'.php';
-            if( file_exists( $file ) ) App::$config[ $filename ] = require $file;
+            if( file_exists( $file ) ) 
+                App::$config[ $filename ] = require $file;
         }
 
-        if( $key === 'all' ) return App::$config[ $filename ];
+        if( $key === '*' ) return App::$config[ $filename ];
 
         if( isset( App::$config[ $filename ][ $key ] ) )
             return App::$config[ $filename ][ $key ];
@@ -100,8 +97,13 @@ function t( $text , $params = array() , $package = 'main' ){
     return $sentence;
 }
 
-function dump( $var ){
-    file_put_contents( ROOT_DIR.'/log/debug.log' , var_export( $var , true ) . "\n\n" , FILE_APPEND );
+function dump( $var , $html = false ){
+    if( $html ){
+        echo '<pre>';
+        print_r( $var );
+    }else
+        file_put_contents( ROOT_DIR.'/log/debug.log' , 
+                var_export( $var , true ) . "\n\n" , FILE_APPEND );
 }
 
 function isEmail( $email ){

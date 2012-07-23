@@ -77,12 +77,16 @@ class Action {
     protected function getStylesheets(){
         $html = '';
         foreach( $this->stylesheets as $url )
-            $html .= '<link href="'.$url.'" type="text/css" rel="stylesheet" />';
+            $html .= '<link href="'.$url.'" type="text/css" rel="stylesheet"/>';
 
         return $html;
     }
 
-    public function error( $message , $code = 0 ){
-        echo $message.' '.$code;
+    public function error( $message ){
+        if( \App::$command->dataType === 'html' ){
+            require ROOT_DIR.'/template/error.php';
+        }else if( \App::$command->dataType === 'text' ){
+            echo $message;
+        }
     }
 }
