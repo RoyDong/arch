@@ -17,8 +17,6 @@ class Action {
         $this->method = $method;
     }
 
-    public function init(){}
-
     public function end(){}
 
     protected function redirect(  $route = '' , $params = array() ){
