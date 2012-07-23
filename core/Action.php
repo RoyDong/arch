@@ -41,9 +41,8 @@ class Action {
         else if( $_tpl[0] !== '/' )
             $_tpl = \App::$command->path.$_tpl;
 
-        $_tpl = ROOT_DIR.'/template'.$_tpl.'.php';
         if( $data ) extract( $data );
-        require $_tpl;
+        require ROOT_DIR.'/template'.$_tpl.'.php';
     }
 
     protected function javascript( $url ){
