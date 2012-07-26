@@ -11,6 +11,8 @@ class Command {
 
     protected $method;
 
+    protected $time;
+
     protected $dataType = 'html';
 
     private static $methods = array(
@@ -32,7 +34,9 @@ class Command {
 
         if( isset($_SERVER['HTTP_DATA_TYPE']) &&
                 in_array( $_SERVER['HTTP_DATA_TYPE'] , Command::$dataTypes ) )
-            $this->dataType = strtolower( $_SERVER['HTTP_DATA_TYPE'] );
+            $this->dataType = $_SERVER['HTTP_DATA_TYPE'];
+
+        $this->time = $_SERVER['REQUEST_TIME'];
     }
 
     public function __get( $name ){

@@ -20,4 +20,16 @@ class Diary extends \core\model\Mysql {
     public function setText( $text ){
         $this->data['text'] = $text;
     }
+
+    public function getDiaries(){
+
+    }
+
+    public function getUserDiaries( $userId , $timeline = null , $limit = 30 ){
+        if( $timeline === null ) $timeline = \App::$command->time;
+
+        return $this->find(
+                '`uid`="'.$userId.'" AND `ctime`<="'.$timeline.'"' ,
+                '`ctime` DESC' , $limit );
+    }
 }

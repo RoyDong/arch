@@ -3,13 +3,17 @@ namespace module;
 
 class User {
 
-    private static $pool = array();
+    protected static $pool = array();
 
-    private static $current;
+    protected static $current;
 
-    private $user;
+    protected $user;
 
-    private $profile;
+    protected $profile;
+
+    protected $diary;
+
+    protected $diaries = array();
 
     public static function instance( $id ){
         if( empty( User::$pool[$id] ) ){
@@ -69,6 +73,7 @@ class User {
             $this->profile = $profile;
 
         $this->user = $user;
+        $this->diary = new \model\Diary;
     }
 
     public function getData(){
@@ -76,5 +81,14 @@ class User {
             return array_merge( $this->user->data , $this->profile->data );
         else
             return $this->user->data;
+    }
+
+    public function getDiaries( $timeline = null , $limit = 30 ){
+        return $this->diary
+                ->getUserDiaries( $this->user->id , $timeline , $limit );
+    }
+
+    public function getDiary(){
+
     }
 }

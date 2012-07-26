@@ -59,10 +59,10 @@ class Mysql extends \core\Model {
     }
 
     public function save(){
-        $this->data['utime'] = $_SERVER['REQUEST_TIME'];
+        $this->data['utime'] = \App::$command->time;
 
         if( $this->isNew ){
-            $this->data['ctime'] = $_SERVER['REQUEST_TIME'];
+            $this->data['ctime'] = \App::$command->time;
             $id = $this->insert( $this->data );
             if( $id > 0 ){
                 $this->data['id'] = $id;
