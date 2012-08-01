@@ -91,4 +91,11 @@ class User {
     public function getDiary(){
 
     }
+
+    public function writeDiary( $text , $weather ){
+        $diary = new \model\Diary;
+        $diary->uid = $this->user->id;
+        $diary->text = $text;
+        $diary->save();
+    }
 }

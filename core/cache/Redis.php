@@ -5,7 +5,8 @@ class Redis extends \core\Cache {
 
     public $redis;
 
-    public function __construct( $host , $port , $timeout = 1 ){
-        $this->redis = new \Redis( $host , $port , $timeout );
+    public function __construct( $host , $port , $timeout = 0.5 ){
+        $redis = new \Redis;
+        $redis->pconnect( $host , $port , $timeout );
     }
 }
