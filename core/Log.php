@@ -7,17 +7,25 @@ class Log {
 
     protected $fp;
 
+    protected $on;
+
     public function __construct(){
-        $this->file = ROOT_DIR.'/log/'.ENVIRONMENT.'.log';
-        $this->fp = fopen( $this->file , 'a' );
+        $config = \App::config( 'log' );
+        $this->on = isset( $config['on'] ) ? (bool)$config['on'] : false;
+
+        if( $this->on ){
+            $dir = isset( $config['dir'] ) ? $config['dir'] : ROOT_DIR.'/log';
+            $this->file = $dir.'/'.ENVIRONMENT.'.log';
+            $this->fp = fopen( $this->file , 'a' );
+        }
     }
 
     public function add( $text , $environment = 'development' ){
-        if( ENVIRONMENT === $environment )
+        if( $this->on && ENVIRONMENT === $environment )
             fwrite( $this->fp , microtime( true ).' '.$text."\n" );
     }
 
     public function __destruct(){
-        fclose( $this->fp );
+        if( $this->on ) fclose( $this->fp );
     }
 }

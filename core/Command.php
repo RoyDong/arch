@@ -9,7 +9,7 @@ class Command {
 
     protected $name;
 
-    protected $method;
+    protected $method = 'get';
 
     protected $time;
 
@@ -29,8 +29,6 @@ class Command {
 
         if( isset($_POST['m']) && in_array( $_POST['m'] , Command::$methods ) )
             $this->method = $_POST['m'];
-        else
-            $this->method = 'get';
 
         if( isset($_SERVER['HTTP_DATA_TYPE']) &&
                 in_array( $_SERVER['HTTP_DATA_TYPE'] , Command::$dataTypes ) )

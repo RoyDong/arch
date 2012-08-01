@@ -12,6 +12,8 @@ abstract class Model {
 
     protected $isNew = true;
 
+    protected $cache;
+
     public function __construct(){
         if( empty( $this->table ) ) 
             throw new \Exception( 'table is not specified');

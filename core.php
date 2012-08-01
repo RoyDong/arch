@@ -49,7 +49,7 @@ class App {
         $e = error_get_last();
     }
 
-    public static function config( $key = '*' , $filename = 'config' ){
+    public static function & config( $key = '*' , $filename = 'config' ){
         if( empty( App::$config[ $filename ] ) ){
             $file = ROOT_DIR.'/config/'.$filename.'.php';
             if( file_exists( $file ) ) 
