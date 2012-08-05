@@ -15,12 +15,34 @@ class Action {
 
     public function __construct( $method ){
         $this->method = $method;
+
+        switch( \Arch::$command->dataType ){
+            case 'html':
+                break;
+
+            case 'text':
+                header( 'Content-Type: text/plain; charset=utf-8' );
+                break;
+
+            case 'json':
+                header( 'Content-Type: application/json; charset=utf-8' );
+                break;
+
+            case 'xml':
+                header( 'Content-Type: text/xml; charset=utf-8' );
+                break;
+        }
     }
 
-    public function end(){}
+    public function init(){}
 
-    protected function redirect(  $route = '' , $params = array() ){
-        header( 'Location: '.\App::url( $route , $params ) );
+    protected function redirect( $url , $time = 0 ){
+        if( $time > 0 )
+            header( 'Refresh: '.$time.'; url='.$url );
+        else
+            header( 'Location: '.$url );
+
+        throw new \Exception( 'finish' );
     }
 
     protected function render( $_tpl = null , $data = null ){
@@ -37,9 +59,9 @@ class Action {
 
     protected function renderPartial( $_tpl = null , $data = null ){
         if( empty($_tpl) )
-            $_tpl = \App::$command->path.\App::$command->name;
+            $_tpl = \Arch::$command->path.\Arch::$command->name;
         else if( $_tpl[0] !== '/' )
-            $_tpl = \App::$command->path.$_tpl;
+            $_tpl = \Arch::$command->path.$_tpl;
 
         if( $data ) extract( $data );
         require ROOT_DIR.'/template'.$_tpl.'.php';
@@ -77,11 +99,7 @@ class Action {
         return $html;
     }
 
-    public function error( $message ){
-        if( \App::$command->dataType === 'html' ){
-            require ROOT_DIR.'/template/error.php';
-        }else if( \App::$command->dataType === 'text' ){
-            echo $message;
-        }
+    public function error( $e ){
+        $this->render( '/error' , array( 'e' => $e ) );
     }
 }

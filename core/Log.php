@@ -10,7 +10,7 @@ class Log {
     protected $on;
 
     public function __construct(){
-        $config = \App::config( 'log' );
+        $config = \Arch::config( 'log' );
         $this->on = isset( $config['on'] ) ? (bool)$config['on'] : false;
 
         if( $this->on ){

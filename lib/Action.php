@@ -4,9 +4,8 @@ namespace lib;
 class Action extends \core\Action {
 
     protected $user;
-    
-    public function __construct( $method ){
-        $this->method = $method;
+
+    public function init(){
         $this->user = \module\User::current();
     }
 }

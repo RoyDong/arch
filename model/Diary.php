@@ -26,7 +26,7 @@ class Diary extends \core\model\Mysql {
     }
 
     public function getUserDiaries( $userId , $timeline = null , $limit = 30 ){
-        if( $timeline === null ) $timeline = \App::$command->time;
+        if( $timeline === null ) $timeline = \Arch::$command->time;
 
         return $this->find(
                 '`uid`="'.$userId.'" AND `ctime`<="'.$timeline.'"' ,

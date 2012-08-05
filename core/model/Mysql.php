@@ -30,7 +30,7 @@ class Mysql extends \core\Model {
     }
 
     protected function init(){
-        $config = \App::config( ENVIRONMENT , 'db' );
+        $config = \Arch::config( ENVIRONMENT , 'db' );
         $this->pdo = Mysql::pdo(
                 $config['dsn'] , 
                 $config['username'] , 
@@ -59,10 +59,10 @@ class Mysql extends \core\Model {
     }
 
     public function save(){
-        $this->data['utime'] = \App::$command->time;
+        $this->data['utime'] = \Arch::$command->time;
 
         if( $this->isNew ){
-            $this->data['ctime'] = \App::$command->time;
+            $this->data['ctime'] = \Arch::$command->time;
             $id = $this->insert( $this->data );
             if( $id > 0 ){
                 $this->data['id'] = $id;

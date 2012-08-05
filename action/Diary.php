@@ -14,7 +14,7 @@ class Diary extends \lib\Action {
     }
 
     public function get(){
-
+        $this->user->getDiaries();
     }
 
     public function del(){

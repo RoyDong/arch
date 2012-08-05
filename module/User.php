@@ -26,7 +26,7 @@ class User {
 
     public static function current(){
         if( User::$current ) return User::$current;
-        return User::$current = User::instance( \App::$session->userId );
+        return User::$current = User::instance( \Arch::$session->userId );
     }
 
     public static function signin( $email , $password ){
@@ -34,21 +34,21 @@ class User {
             $user = new \model\User;
             if( $user->load( array( 'email' => $email ) ) ){
                 if( $user->checkPassword( $password ) ){
-                    \App::$session->userId = $user->id;
+                    \Arch::$session->userId = $user->id;
                     return User::$pool[$user->id] = new User( $user );
                 }
-                \App::$message->setError( 'password' , 'wrong password' );
+                \Arch::$message->setError( 'password' , 'wrong password' );
             }else
-                \App::$message->setError( 'email' , 'email unexist' );
+                \Arch::$message->setError( 'email' , 'email unexist' );
         }else
-            \App::$message->setError( 'email' , 'wrong email' );
+            \Arch::$message->setError( 'email' , 'wrong email' );
 
         return false;
     }
 
     public static function signup( $email , $password ){
         if( strlen( $password ) < 6 ){
-            \App::$message->setError( 'password' , 'password is less than 6' );
+            \Arch::$message->setError( 'password' , 'password is less than 6' );
             return false;
         }
 
@@ -57,12 +57,12 @@ class User {
             if( $user->setEmail( $email ) ){
                 $user->password = $password;
                 $user->save();
-                \App::$session->userId = $user->id;
+                \Arch::$session->userId = $user->id;
                 return User::$pool[$user->id] = new User( $user );
             }
-            \App::$message->setError( 'email' , 'email exist' );
+            \Arch::$message->setError( 'email' , 'email exist' );
         }else
-            \App::$message->setError( 'email' , 'wrong email' );
+            \Arch::$message->setError( 'email' , 'wrong email' );
 
         return false;
     }

@@ -9,6 +9,8 @@ class Command {
 
     protected $name;
 
+    protected $host;
+
     protected $method = 'get';
 
     protected $time;
@@ -34,6 +36,7 @@ class Command {
                 in_array( $_SERVER['HTTP_DATA_TYPE'] , Command::$dataTypes ) )
             $this->dataType = $_SERVER['HTTP_DATA_TYPE'];
 
+        $this->host = $_SERVER['HTTP_HOST'];
         $this->time = $_SERVER['REQUEST_TIME'];
     }
 
@@ -45,18 +48,8 @@ class Command {
         $class = '\\action'.str_replace( '/' , '\\' , $this->path )
                 .ucfirst( $this->name );
 
-        $action = new $class( $this->method );
-        \App::$action = $action;
-        try{
-            $action->{$this->method}();
-            $action->end();
-        }catch( \Exception $e ){
-            header('HTTP/1.1 408 Arch Framework Error');
-            $action->error( $e->getMessage() );
-        }
-    }
-
-    public function createCSRF(){
-
+        $this->action = new $class( $this->method );
+        $this->action->init();
+        $this->action->{$this->method}();
     }
 }
