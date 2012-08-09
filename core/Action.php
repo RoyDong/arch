@@ -18,6 +18,7 @@ class Action {
 
         switch( \Arch::$command->dataType ){
             case 'html':
+                header( 'Content-Type: text/html; charset=utf-8' );
                 break;
 
             case 'text':
