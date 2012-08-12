@@ -1,5 +1,5 @@
-<?php $this->stylesheet('/css/index.css'); ?>
-<?php $this->javascript('/js/index.js'); ?>
+<?php $h->stylesheet('/css/index.css'); ?>
+<?php $h->javascript('/js/index.js'); ?>
 <?php $this->title = '日记本'; ?>
 <div id="main">
     <div id="left">

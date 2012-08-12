@@ -48,7 +48,7 @@ class Command {
         $class = '\\action'.str_replace( '/' , '\\' , $this->path )
                 .ucfirst( $this->name );
 
-        $this->action = new $class( $this->method );
+        $this->action = new $class;
         $this->action->init();
         $this->action->{$this->method}();
     }

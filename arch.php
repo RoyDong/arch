@@ -8,8 +8,6 @@ class Arch {
 
     public static $log;
 
-    public static $action;
-
     public static $message;
 
     private static $config = array();

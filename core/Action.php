@@ -3,8 +3,6 @@ namespace core;
 
 class Action {
 
-    protected $method;
-
     protected $layout = 'main';
 
     protected $title = '';
@@ -13,12 +11,11 @@ class Action {
 
     protected $csrf;
 
-    protected $javascripts = array();
+    protected $html;
 
-    protected $stylesheets = array();
-
-    public function __construct( $method ){
-        $this->method = $method;
+    public function __construct(){
+        if( $this->csrfCheck && $_POST['arch_csrf'] !== $this->getCsrf() )
+            throw new \Exception( 'csrf token error' );
 
         switch( \Arch::$command->dataType ){
             case 'html':
@@ -38,8 +35,7 @@ class Action {
                 break;
         }
 
-        if( $this->csrfCheck && $_POST['arch_csrf'] !== $this->getCsrf() )
-            throw new \Exception( 'csrf token error' );
+        $this->html = new \core\Html( $this );
     }
 
     public function init(){}
@@ -59,9 +55,10 @@ class Action {
         $content = ob_get_contents();
         ob_end_clean();
 
-        if( $this->layout )
+        if( $this->layout ){
+            $h = $this->html;
             require ROOT_DIR.'/template/layout/'.$this->layout.'.php';
-        else
+        }else
             echo $content;
     }
 
@@ -72,39 +69,8 @@ class Action {
             $_tpl = \Arch::$command->path.$_tpl;
 
         if( $data ) extract( $data );
+        $h = $this->html;
         require ROOT_DIR.'/template'.$_tpl.'.php';
-    }
-
-    protected function javascript( $url ){
-        if( is_array( $url ) )
-            foreach( $url as $v )
-                array_push( $this->javascripts , $v );
-        else
-            array_push( $this->javascripts , $url );
-    }
-
-    protected function stylesheet( $url ){
-        if( is_array( $url ) )
-            foreach( $url as $v )
-                array_push( $this->stylesheets , $v );
-        else
-            array_push( $this->stylesheets , $url );
-    }
-
-    protected function getJavascripts(){
-        $html = '';
-        foreach( $this->javascripts as $url )
-            $html .= '<script type="text/javascript" src="'.$url.'"></script>';
-
-        return $html;
-    }
-
-    protected function getStylesheets(){
-        $html = '';
-        foreach( $this->stylesheets as $url )
-            $html .= '<link href="'.$url.'" type="text/css" rel="stylesheet"/>';
-
-        return $html;
     }
 
     protected function getCsrf(){
