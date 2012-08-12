@@ -11,7 +11,7 @@ class Action {
 
     protected $csrf;
 
-    protected $html;
+    private $html;
 
     public function __construct(){
         if( $this->csrfCheck && $_POST['arch_csrf'] !== $this->getCsrf() )
@@ -34,8 +34,6 @@ class Action {
                 header( 'Content-Type: text/xml; charset=utf-8' );
                 break;
         }
-
-        $this->html = new \core\Html( $this );
     }
 
     public function init(){}
@@ -56,7 +54,7 @@ class Action {
         ob_end_clean();
 
         if( $this->layout ){
-            $h = $this->html;
+            $h = $this->getHtml();
             require ROOT_DIR.'/template/layout/'.$this->layout.'.php';
         }else
             echo $content;
@@ -69,7 +67,7 @@ class Action {
             $_tpl = \Arch::$command->path.$_tpl;
 
         if( $data ) extract( $data );
-        $h = $this->html;
+        $h = $this->getHtml();
         require ROOT_DIR.'/template'.$_tpl.'.php';
     }
 
@@ -84,6 +82,13 @@ class Action {
         }
 
         return $this->csrf;
+    }
+
+    protected function getHtml(){
+        if( empty( $this->html ) )
+            $this->html = new \core\Html( $this );
+
+        return $this->html;
     }
 
     public function error( $e ){
