@@ -9,7 +9,7 @@ class Action {
 
     protected $csrfCheck = true;
 
-    protected $csrf;
+    private $csrf;
 
     private $html;
 
