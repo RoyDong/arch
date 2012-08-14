@@ -17,6 +17,8 @@ class Command {
 
     protected $dataType = 'html';
 
+    protected $csrf;
+
     private static $methods = array(
         'get' , 'set' , 'add' , 'del'
     );
@@ -41,7 +43,10 @@ class Command {
     }
 
     public function __get( $name ){
-        if( isset( $this->$name ) ) return $this->$name;
+        if( empty( $this->$name ) ) 
+            return $this->{'get'.ucfirst($name)}();
+        else
+            return $this->$name;
     }
 
     public function exec(){
@@ -49,7 +54,31 @@ class Command {
                 .ucfirst( $this->name );
 
         $this->action = new $class;
+        $this->checkCsrf();
         $this->action->init();
         $this->action->{$this->method}();
+    }
+
+    public function getCsrf(){
+        if( empty( $this->csrf ) ){
+            $this->csrf = \Arch::$session->csrf;
+
+            if( empty( $this->csrf ) ){
+                $this->csrf = sha1( \Arch::$command->time.uniqid( 'fol' ) );
+                \Arch::$session->csrf = $this->csrf;
+            }
+        }
+
+        return $this->csrf;
+    }
+
+    public function checkCsrf(){
+        if( $this->method !== 'get' && $this->action->csrfCheck ){
+            $csrf = isset( $_POST['ARCH_CSRF'] ) ? $_POST['ARCH_CSRF'] : '';
+            if( $csrf !== $this->getCsrf() ){
+                $this->dataType = 'text';
+                throw new Exception( 'csrf token error' );
+            }
+        }
     }
 }

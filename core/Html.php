@@ -7,12 +7,6 @@ class Html {
 
     protected $stylesheets = array();
 
-    protected $action;
-
-    public function __construct( $action ){
-        $this->action = $action;
-    }
-
     public function __get( $name ){
         return $this->{'get'.ucfirst( $name )}();
     }
@@ -20,10 +14,10 @@ class Html {
     public function getFormMethod( $method = 'set' ){
         return '<input type="hidden" name="m" value="'.$method.'"/>'
                 .'<input type="hidden" name="ARCH_CSRF" value="'
-                .$this->action->getCsrf().'"/>';
+                .\Arch::$command->csrf.'"/>';
     }
 
-    protected function javascript( $url ){
+    public function javascript( $url ){
         if( is_array( $url ) )
             foreach( $url as $v )
                 array_push( $this->javascripts , $v );
@@ -31,7 +25,7 @@ class Html {
             array_push( $this->javascripts , $url );
     }
 
-    protected function stylesheet( $url ){
+    public function stylesheet( $url ){
         if( is_array( $url ) )
             foreach( $url as $v )
                 array_push( $this->stylesheets , $v );
@@ -39,7 +33,7 @@ class Html {
             array_push( $this->stylesheets , $url );
     }
 
-    protected function getJavascripts(){
+    public function getJavascripts(){
         $html = '';
         foreach( $this->javascripts as $url )
             $html .= '<script type="text/javascript" src="'.$url.'"></script>';
@@ -47,7 +41,7 @@ class Html {
         return $html;
     }
 
-    protected function getStylesheets(){
+    public function getStylesheets(){
         $html = '';
         foreach( $this->stylesheets as $url )
             $html .= '<link href="'.$url.'" type="text/css" rel="stylesheet"/>';

@@ -3,20 +3,15 @@ namespace core;
 
 class Action {
 
+    public $csrfCheck = true;
+
     protected $layout = 'main';
 
     protected $title = '';
 
-    protected $csrfCheck = true;
-
-    private $csrf;
-
     private $html;
 
     public function __construct(){
-        if( $this->csrfCheck && $_POST['arch_csrf'] !== $this->getCsrf() )
-            throw new \Exception( 'csrf token error' );
-
         switch( \Arch::$command->dataType ){
             case 'html':
                 header( 'Content-Type: text/html; charset=utf-8' );
@@ -71,22 +66,9 @@ class Action {
         require ROOT_DIR.'/template'.$_tpl.'.php';
     }
 
-    protected function getCsrf(){
-        if( empty( $this->csrf ) ){
-            $this->csrf = \Arch::$session->csrf;
-
-            if( empty( $this->csrf ) ){
-                $this->csrf = \sha1( \Arch::$command->time.\uniqid( 'fol' ) );
-                \Arch::$session->csrf = $this->csrf;
-            }
-        }
-
-        return $this->csrf;
-    }
-
     protected function getHtml(){
         if( empty( $this->html ) )
-            $this->html = new \core\Html( $this );
+            $this->html = new \core\Html;
 
         return $this->html;
     }
