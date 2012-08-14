@@ -54,7 +54,7 @@ class Command {
                 .ucfirst( $this->name );
 
         $this->action = new $class;
-        $this->checkCsrf();
+        $this->authenticate();
         $this->action->init();
         $this->action->{$this->method}();
     }
@@ -72,7 +72,7 @@ class Command {
         return $this->csrf;
     }
 
-    public function checkCsrf(){
+    public function authenticate(){
         if( $this->method !== 'get' && $this->action->csrfCheck ){
             $csrf = isset( $_POST['ARCH_CSRF'] ) ? $_POST['ARCH_CSRF'] : '';
             if( $csrf !== $this->getCsrf() ){
