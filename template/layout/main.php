@@ -8,6 +8,6 @@
         <?php echo $h->javascripts?>
     </head>
     <body>
-        <?php echo $content; ?>
+        <?php echo $content?>
     </body>
 </html>

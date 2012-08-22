@@ -12,12 +12,21 @@ class Arch {
 
     private static $config = array();
 
+    private static $helpers = array();
+
     public static function run(){
         Arch::$log = new \core\Log;
         Arch::$session = new \core\Session;
         Arch::$message = new \core\Message;
         Arch::$command = new \core\Command;
         Arch::$command->exec();
+    }
+
+    public static function help( $name ){
+        if( isset( Arch::$helpers[$name] ) ) return;
+        $file = ROOT_DIR.'/helper/'.$name.'.php';
+        require $file;
+        Arch::$helpers[$name] = true;
     }
 
     public static function autoload( $className ){
@@ -87,19 +96,6 @@ function t( $text , $params = array() , $package = 'main' ){
     }
 
     return $sentence;
-}
-
-function dump( $var , $html = false ){
-    if( $html ){
-        echo '<pre>';
-        print_r( $var );
-    }else
-        file_put_contents( ROOT_DIR.'/log/debug.log' , 
-                var_export( $var , true ) . "\n\n" , FILE_APPEND );
-}
-
-function isEmail( $email ){
-    return preg_match( '/^[\w\._\-]+@[\w\.\-_]*[\w\-_]\.[a-z]{2,4}$/i' , $email );
 }
 
 spl_autoload_register( 'Arch::autoload' );
