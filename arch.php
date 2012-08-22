@@ -25,8 +25,11 @@ class Arch {
     public static function help( $name ){
         if( isset( Arch::$helpers[$name] ) ) return;
         $file = ROOT_DIR.'/helper/'.$name.'.php';
-        require $file;
-        Arch::$helpers[$name] = true;
+        if( file_exists( $file ) ){
+            require $file;
+            Arch::$helpers[$name] = true;
+        }else
+            throw new Exception( 'can not find helper: '.$name );
     }
 
     public static function autoload( $className ){
