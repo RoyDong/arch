@@ -53,6 +53,7 @@ class Command {
         $class = '\\action'.str_replace( '/' , '\\' , $this->path )
                 .ucfirst( $this->name );
 
+        \Arch::getHelp( 'common' );
         $this->action = new $class;
         $this->authenticate();
         $this->action->init();
