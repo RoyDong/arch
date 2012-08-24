@@ -78,7 +78,7 @@ class Command {
             $csrf = isset( $_POST['ARCH_CSRF'] ) ? $_POST['ARCH_CSRF'] : '';
             if( $csrf !== $this->getCsrf() ){
                 $this->dataType = 'text';
-                throw new Exception( 'csrf token error' );
+                throw new \Exception( 'csrf token error' );
             }
         }
     }
