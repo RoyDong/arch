@@ -22,7 +22,7 @@ class Arch {
         Arch::$command->exec();
     }
 
-    public static function getHelp( $name ){
+    public static function help( $name ){
         if( isset( Arch::$helpers[$name] ) ) return;
         $file = ROOT_DIR.'/helper/'.$name.'.php';
         if( file_exists( $file ) ){

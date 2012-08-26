@@ -43,7 +43,7 @@ class Command {
     }
 
     public function __get( $name ){
-        if( empty( $this->$name ) ) 
+        if( empty( $this->$name ) )
             return $this->{'get'.ucfirst($name)}();
         else
             return $this->$name;
@@ -53,7 +53,7 @@ class Command {
         $class = '\\action'.str_replace( '/' , '\\' , $this->path )
                 .ucfirst( $this->name );
 
-        \Arch::getHelp( 'common' );
+        \Arch::help( 'arch' );
         $this->action = new $class;
         $this->authenticate();
         $this->action->init();
