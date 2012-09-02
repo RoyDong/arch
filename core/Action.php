@@ -9,6 +9,8 @@ class Action {
 
     protected $title = '';
 
+    private $theme = '';
+
     private $html;
 
     public function __construct(){
@@ -50,7 +52,7 @@ class Action {
 
         if( $this->layout ){
             $h = $this->getHtml();
-            require ROOT_DIR.'/tpl'.$this->getTheme().'/layout/'.
+            require ROOT_DIR.'/tpl'.$this->theme.'/layout/'.
                     $this->layout.'.php';
         }else
             echo $content;
@@ -64,7 +66,7 @@ class Action {
 
         if( $data ) extract( $data );
         $h = $this->getHtml();
-        require ROOT_DIR.'/tpl'.$this->getTheme().$_tpl.'.php';
+        require ROOT_DIR.'/tpl'.$this->theme.$_tpl.'.php';
     }
 
     protected function getHtml(){
@@ -74,8 +76,11 @@ class Action {
         return $this->html;
     }
 
-    protected function getTheme(){
-        return '';
+    protected function setTheme( $name ){
+        if( $name )
+            $this->theme = '/'.$name;
+        else
+            $this->theme = '';
     }
 
     public function error( $e ){
