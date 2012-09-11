@@ -24,6 +24,8 @@ abstract class Model {
     public function __get( $name ){
         if( isset($this->data[$name]) )
             return $this->data[$name];
+        else
+            return $this->{'get'.ucfirst( $name )}();
     }
 
     public function __set( $name , $value ){
@@ -36,5 +38,5 @@ abstract class Model {
 
     abstract protected function init();
 
-    abstract protected function load( $data );
+    abstract public function load( $data );
 }
