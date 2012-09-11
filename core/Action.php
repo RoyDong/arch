@@ -117,6 +117,7 @@ class Action {
             $_tpl = \Arch::$command->path.$_tpl;
 
         if( $data ) extract( $data );
+        unset( $data );
         $h = $this->getHtml();
         require ROOT_DIR.'/tpl'.$this->theme.$_tpl.'.php';
     }
