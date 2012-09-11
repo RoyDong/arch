@@ -112,7 +112,7 @@ class Arch {
      */
     public static function & config( $key = '*' , $filename = 'config' ){
         if( empty( Arch::$config[ $filename ] ) ){
-            $file = ROOT_DIR.'/config/'.$filename.'.php';
+            $file = ROOT_DIR.'/conf/'.$filename.'.php';
             if( file_exists( $file ) ) 
                 Arch::$config[ $filename ] = require $file;
         }
