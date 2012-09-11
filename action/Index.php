@@ -7,7 +7,7 @@ class Index extends \lib\Action {
         if( $this->user )
             $this->render();
         else
-            $this->render('welcome');
+            $this->render('index');
     }
 
     public function add(){

@@ -12,7 +12,7 @@ class User extends \lib\Action {
         if( $user ){
             $this->redirect();
         }else{
-            $this->render( 'welcome' );
+            $this->render( 'index' );
         }
     }
 
@@ -21,6 +21,6 @@ class User extends \lib\Action {
         if( $user ){
             $this->redirect();
         }else
-            $this->render( 'welcome' );
+            $this->render( 'index' );
     }
 }

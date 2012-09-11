@@ -8,6 +8,6 @@ class Signin extends \core\Action {
         if( $user ){
             $this->redirect();
         }else
-            $this->render( 'welcome' );
+            $this->render( 'index' );
     }
 }
