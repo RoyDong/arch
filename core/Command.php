@@ -3,7 +3,7 @@ namespace core;
 
 /**
  * Command or Request, handle http requests.
- * need nginx rewrite for routing, see ROOT_DIR/config/rewrite.nginx
+ * need nginx rewrite for routing, see ROOT_DIR/conf/rewrite.nginx
  * 
  *  url rule: 
  *      url format: http://{host}{path}{name} 
