@@ -4,10 +4,7 @@ namespace action;
 class Index extends \lib\Action {
 
     public function get(){
-        if( $this->user )
-            $this->render();
-        else
-            $this->render('index');
+        $this->render('index');
     }
 
     public function add(){
