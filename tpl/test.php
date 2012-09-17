@@ -1,4 +1,4 @@
-<pre><?php print_r($_COOKIE)?></pre>
+<?php $h->javascript('/js/jquery.js')?>
 <textarea id="text"></textarea>
 <button onclick="ajax()">write</button>
 <script>

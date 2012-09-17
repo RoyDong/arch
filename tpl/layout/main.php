@@ -5,7 +5,6 @@
         <title><?php echo $this->title?></title>
         <base href="http:://diary.tool/" />
         <?php echo $h->stylesheets?>
-        <script type="text/javascript" src="/js/jquery.js"></script>
         <?php echo $h->javascripts?>
     </head>
     <body>
