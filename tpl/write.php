@@ -1,8 +1,11 @@
-<?php $h->javascript(['/markitup/jquery.markitup.js', '/js/markitup.js'])?>
-<?php $h->stylesheet(['/markitup/skins/markitup/style.css', '/markitup/sets/default/style.css'])?>
+<?php $h->javascript(['/kindeditor/kindeditor.js', '/kindeditor/lang/zh_CN.js'])?>
 <script type="text/javascript" >
-   $(document).ready(function() {
-      $("#markItUp").markItUp(mySettings);
-   });
+    var editor;
+    KindEditor.ready(function(K){
+        editor = K.create('#editor', {
+            width: '900px',
+            height: '400px'
+        });
+    });
 </script>
-<textarea id="markItUp"></textarea>
+<textarea style="margin: 0px auto;width: 960px" id="editor"></textarea>
