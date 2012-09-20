@@ -22,25 +22,6 @@
             }
         });
     }
-    /*
-                $.ajax({
-                    type:"GET",
-                    url:"http://bdc.dict.cn/",
-                    data:{
-                        lastbook: getCookie('lastbook'),
-                        action:"save",
-                        page:_dict_bdc.page
-                    },
-                    error:function(a){
-                        console.log(a);
-                    },
-                    success:function(a){
-                        console.log(a);
-                    },
-                    cache:false
-                });
-                autoSave.running=[]
-                */
 </script>
 <form action="/test" method="post">
     <input type="hidden" name="m" value="add"/>

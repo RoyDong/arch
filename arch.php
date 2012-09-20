@@ -102,26 +102,29 @@ class Arch {
     public static function shutdown(){
         $e = error_get_last();
     }
+}
 
-    /**
-     * get configuration
-     * 
-     * @param string $key
-     * @param string $filename config file name
-     * @return mixed value
-     */
-    public static function & config( $key = '*' , $filename = 'config' ){
-        if( empty( Arch::$config[ $filename ] ) ){
-            $file = ROOT_DIR.'/conf/'.$filename.'.php';
-            if( file_exists( $file ) ) 
-                Arch::$config[ $filename ] = require $file;
-        }
+/**
+ * c means configuration
+ * get configuration
+ * 
+ * @param string $key
+ * @param string $filename config file name
+ * @return mixed value
+ */
+function & c( $key = '*' , $filename = 'config' ){
+    static $config = [];
 
-        if( $key === '*' ) return Arch::$config[ $filename ];
-
-        if( isset( Arch::$config[ $filename ][ $key ] ) )
-            return Arch::$config[ $filename ][ $key ];
+    if( empty( $config[ $filename ] ) ){
+        $file = ROOT_DIR.'/conf/'.$filename.'.php';
+        if( file_exists( $file ) ) 
+            $config[ $filename ] = require $file;
     }
+
+    if( $key === '*' ) return $config[ $filename ];
+
+    if( isset( $config[ $filename ][ $key ] ) )
+        return $config[ $filename ][ $key ];
 }
 
 /**

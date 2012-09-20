@@ -3,11 +3,18 @@ namespace action;
 
 class Write extends \core\Action {
 
-    public function get(){
-        $this->render( 'write' );
+    protected $user;
+
+    public function init(){
+        $this->user = \module\User::current();
+        if(empty($this->user)) $this->redirect('signin');
     }
 
-    public function set(){
-        $this->render( 'index' );
+    public function get(){
+        $this->render();
+    }
+
+    public function add(){
+        echo json_encode($_POST);
     }
 }

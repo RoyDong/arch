@@ -1,0 +1,16 @@
+/* 
+    Document   : layout
+    Created on : 2012-9-21, 13:50:31
+    Author     : dict1066
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+div, h1, h2, span, body{
+    margin: 0px;
+    padding: 0px;
+}
+
+body{
+    background-color: #eee;
+}
