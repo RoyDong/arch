@@ -15,6 +15,7 @@ class Write extends \core\Action {
     }
 
     public function add(){
-        echo json_encode($_POST);
+        $result = $this->user->write( $_POST['title'] , $_POST['content'] );
+        echo (int)$result;
     }
 }

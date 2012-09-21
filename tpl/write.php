@@ -4,6 +4,9 @@
     <h2>Write your article</h2>
 </center>
 <div style="margin: 10px auto;width: 960px;">
+    <div style="margin-bottom: 20px">
+        <label>Title: </label><input type="text" id="title"/>
+    </div>
     <textarea id="editor"></textarea>
     <button style="margin-top: 10px" id="save">Save (Ctrl+Enter)</button>
 </div>
@@ -17,20 +20,28 @@
         });
     });
     $('#save').click(function(){
-        $.ajax({
-            url: '/write',
-            type: 'post',
-            data: {
-                m: 'add',
-                ARCH_CSRF: ARCH_CSRF,
-                text: EDITOR.html()
-            },
-            success: function(data){
-                console.log(data)
-            },
-            error: function(data){
-                console.log(data.responseText)
-            }
-        });
+        var title = $('#title').val();
+        var content = EDITOR.html();
+
+        if( content && title ){
+            $.ajax({
+                headers: {'Data-Type': 'text'},
+                url: '/write',
+                type: 'post',
+                data: {
+                    m: 'add',
+                    ARCH_CSRF: ARCH_CSRF,
+                    title: $('#title').val(),
+                    content: EDITOR.html()
+                },
+                success: function(data){
+                    console.log(data);
+                },
+                error: function(data){
+                    console.log(data.responseText);
+                }
+            });
+        }else
+            alert('title and content cant be empty');
     });
 </script>

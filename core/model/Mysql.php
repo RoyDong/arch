@@ -30,7 +30,7 @@ class Mysql extends \core\Model {
     }
 
     protected function init(){
-        $config = \Arch::config( ENVIRONMENT , 'db' );
+        $config = c( ENVIRONMENT , 'db' );
         $this->pdo = Mysql::pdo(
                 $config['dsn'] , 
                 $config['username'] , 
@@ -67,8 +67,10 @@ class Mysql extends \core\Model {
             if( $id > 0 ){
                 $this->data['id'] = $id;
                 $this->isNew = false;
-            }else
-                throw \Exception( 'can not insert data to db' );
+            }else{
+                $info = $this->pdo->errorInfo();
+                throw new \Exception( $info[2] , $info[1] );
+            }
         }else
             $this->update( $this->data , '`id`="'.$this->data['id'].'"' );
     }
@@ -135,12 +137,13 @@ class Mysql extends \core\Model {
      * find multi rows from sql db
      * @return array
      */
-    public function find( $where , $order = '' , $limit = '' ){
+    public function find( $where , $order = '' , $limit = '' , $columns = '*' ){
         if( $order ) $order = ' ORDER BY ' .$order;
         if( $limit ) $limit = ' LIMIT ' . $limit;
 
         $result = $this->pdo->query(
-                'SELECT * FROM `'.$this->table.'` WHERE '.$where.$order.$limit );
+                'SELECT '.$columns.' FROM `'.$this->table.
+                '` WHERE '.$where.$order.$limit );
 
         if( $result ) return $result->fetchAll( \PDO::FETCH_ASSOC );
         return array();

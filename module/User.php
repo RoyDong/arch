@@ -23,4 +23,12 @@ class User {
     protected function __construct( $username ){
         $this->username = $username;
     }
+
+    public function write( $title , $content ){
+        $article = new \model\Article;
+        $article->title = $title;
+        $article->content = $content;
+        $article->save();
+        return $article->id;
+    }
 }

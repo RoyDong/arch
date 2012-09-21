@@ -4,6 +4,7 @@ namespace action;
 class Index extends \lib\Action {
 
     public function get(){
+        $titles = \module\Article::getTitles();
         $this->render('index');
     }
 
