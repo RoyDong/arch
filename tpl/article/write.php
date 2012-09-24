@@ -25,8 +25,7 @@
 
         if( content && title ){
             $.ajax({
-                headers: {'Data-Type': 'text'},
-                url: '/write',
+                url: '/write.txt',
                 type: 'post',
                 data: {
                     m: 'add',
@@ -34,11 +33,14 @@
                     title: $('#title').val(),
                     content: EDITOR.html()
                 },
-                success: function(data){
-                    console.log(data);
+                success: function(id){
+                    if(id > 0){
+                        $('#title').val('');
+                        EDITOR.html('');
+                    }
                 },
                 error: function(data){
-                    console.log(data.responseText);
+                    alert(data.responseText);
                 }
             });
         }else

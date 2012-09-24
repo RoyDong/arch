@@ -1,116 +1,67 @@
-body, div, form, ul, li, input, label, button{
-    margin: 0px;
-    padding: 0px;
-    border: none;
-}
-
-ul{
-    list-style: none;
-}
-
-.clear{
-    clear: both;
-}
-
-body{
-
-    background: #c8dcc8;
-}
-
-#main{
-    width: 960px;
-    margin: 0px auto;
-}
-
-#left{
-    width: 360px;
-    float: left;
-}
-
-#left-content{
-    margin-left: 40px;
-    padding-top: 40px;
-    width: 320px;
-    height: 500px;
-    background: orange;
-}
-
-#forms-wrap{
-    width: 320px;
-    height: 390px;
-    overflow: hidden;
-    -webkit-overflow-scrolling: initial;
-}
-
-#forms{
-    margin-top: -390px;
-}
-
-#forms form{
-    height: 350px;
-}
-
-#left-content a{
-    margin-left: 128px;
-    line-height: 30px;
-}
-
-#forms div{
-    width: 176px;
-    margin-left: 72px;
-    margin-bottom: 10px;
-    line-height: 30px;
-}
-
-#forms ul{
-    padding: 0px 10px;
-}
-
-#forms ul li{
-    height: 80px;
-}
-
-#forms ul li input{
-    width: 300px;
-    height: 40px;
-    line-height: 30px;
-    font-size: 18px;
-    border: 1px brown solid;
-}
-
-#right{
-    width: 600px;
-    float: left;
-}
-
-#right-title {
-    padding: 50px 0px 50px 150px;
-    font-style: italic;
-}
-
-#right-title span{
-    color: brown;
-    font-size: 50px;
-    margin-right: 30px;
-}
-
-#right-content{
-    padding: 50px 40px 30px 40px;
-}
-
-#right-content ul{
-    border: 1px solid #aaa;
-    background: #dcdcdc;
-    padding: 0px 20px 20px 100px;
-}
-
-#right-content ul li{
-    font-family: arial,sans-serif;
-    margin-top: 20px;
-    font-size: 20px;
+#title{
     height: 30px;
+    font-size: 25px;
+    margin: 20px 0px;
+    color: #1E598E;
+    font-weight: bold;
+    line-height: 1.3em;
 }
 
-#copy-right{
-    margin: 30px 0px 0px 80px;
+#content{
+    font-size: 14px;
+    line-height: 30px;
+}
+
+#article-bar {
+    position: fixed;
+    top: 10%;
+    left: 5%;
+    width: 200px;
+    background: #F6F9FB;
+    border: 2px solid #DCE5EE;
+}
+
+#article-bar div{
+    cursor: pointer;
+}
+
+#article-bar #bar-list {
+    margin: 10px 0px;
+}
+
+#article-bar #bar-list li {
+    line-height: 30px;
+    height: 30px;
+    font-size: 16px;
+    background: #F0F3F6; 
+    border-bottom: 1px solid #ddd;
+}
+
+#article-bar span{
+    line-height: 16px;
+    height: 16px;
+    font-size: 16px; 
+}
+
+#article-bar .bar-date{
+    font-size: 12px;
+    font-style: italic;
+    display: inline-block;
+    width: 35px;
+}
+
+#article-bar .bar-title{
+    color: #1E598E;
+    display: inline-block;
+    width: 150px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+#article-bar .bar-title-hover{
+    background: #fff;
+}
+
+#article-bar .bar-title-select{
+    background: #d6d9dB;
 }

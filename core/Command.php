@@ -60,7 +60,7 @@ class Command {
     );
 
     private static $dataTypes = array(
-        'text' , 'json' , 'xml'
+        'txt' , 'json' , 'xml'
     );
 
     /**
@@ -73,9 +73,15 @@ class Command {
         if( isset($_POST['m']) && in_array( $_POST['m'] , Command::$methods ) )
             $this->method = $_POST['m'];
 
-        if( isset($_SERVER['HTTP_DATA_TYPE']) &&
-                in_array( $_SERVER['HTTP_DATA_TYPE'] , Command::$dataTypes ) )
-            $this->dataType = $_SERVER['HTTP_DATA_TYPE'];
+        if( !empty($_GET['f']) ){
+            if( $_GET['f'][0] === '.' )
+                $dataType = ltrim($_GET['f'], '.');
+            else
+                $dataType = ltrim($_GET['f'], 'index.');
+
+            if( in_array( $dataType , Command::$dataTypes ) )
+                $this->dataType = $dataType;
+        }
 
         $this->host = $_SERVER['HTTP_HOST'];
         $this->time = $_SERVER['REQUEST_TIME'];

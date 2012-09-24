@@ -1,15 +1,41 @@
 $(function(){
-    var forms = $('#forms');
+    var selectedTitle;
+    $('#article-bar li').bind({
+        mouseenter: function(){
+            if($(this).hasClass('bar-title-select')) return;
+            $(this).addClass('bar-title-hover');
+        },
+        mouseleave: function(){
+            if($(this).hasClass('bar-title-select')) return;
+            $(this).removeClass('bar-title-hover');
+        },
+        click: function(){
+            if($(this).hasClass('bar-title-select')){
+                
+                return;
+            }
 
-    $('#signin-form-btn').click(function(e){
-        forms.animate({ 'margin-top': '-390px' } , 500 , function(){
-            $( '#signin-email' ).focus();
-        });
+            if( selectedTitle ){
+                selectedTitle.removeClass('bar-title-select');
+                selectedTitle.attr('title', '');
+            }
+
+            selectedTitle = $(this);
+            selectedTitle.removeClass('bar-title-hover');
+            selectedTitle.addClass('bar-title-select');
+            selectedTitle.attr('title', '点击回到顶部');
+        }
     });
 
-    $('#signup-form-btn').click(function(e){
-        forms.animate({ 'margin-top': '0px' } , 500 , function(){
-            $( '#signup-email' ).focus();
-        });
-    });
+    var Title = {
+        select: null,
+
+        offset: 0,
+
+        count: TITLES.length,
+
+        refresh: function(){
+
+        }
+    };
 });

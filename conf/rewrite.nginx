@@ -3,12 +3,10 @@
 
 server_name dev.host.com
 
-
-rewrite ^/ /index.dev.php?n=index break;
-
-rewrite ^/signup /index.dev.php?n=user break;
-rewrite ^/signin /index.dev.php?n=signin break;
-rewrite ^/diary /index.dev.php?n=diary break;
+rewrite ^/signin(.[a-z]+)?$       /index.dev.php?n=signin break;
+rewrite ^/(index.[a-z]+)?$        /index.dev.php?p=/article/&f=$1 break;
+rewrite ^/write(.[a-z]+)?$        /index.dev.php?p=/article/&n=write&f=$1 break;
+rewrite ^/title(.[a-z]+)?$        /index.dev.php?p=/article/&n=title&f=$1 break;
 
 --------------production--------
 

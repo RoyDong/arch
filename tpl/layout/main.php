@@ -9,6 +9,6 @@
         <?php echo $h->javascripts?>
     </head>
     <body>
-        <?php echo $content?>
+        <div id="main"><?php echo $content?></div>
     </body>
 </html>

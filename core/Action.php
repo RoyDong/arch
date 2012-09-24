@@ -41,7 +41,7 @@ class Action {
      */
     public function __construct(){
         switch( \Arch::$command->dataType ){
-            case 'text':
+            case 'txt':
                 header( 'Content-Type: text/plain; charset=utf-8' );
                 break;
 

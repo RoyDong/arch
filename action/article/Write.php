@@ -1,5 +1,5 @@
 <?php
-namespace action;
+namespace action\article;
 
 class Write extends \core\Action {
 
