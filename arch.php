@@ -27,8 +27,6 @@ class Arch {
      */
     public static $message;
 
-    private static $config = array();
-
     private static $helpers = array();
 
     /**

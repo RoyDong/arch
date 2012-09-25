@@ -37,7 +37,7 @@ class Action {
     /**
      * constructor
      * 
-     * Still considering the necessity, maybe someone could told me?
+     * Still considering the necessity, maybe someone could tell me?
      */
     public function __construct(){
         switch( \Arch::$command->dataType ){
@@ -105,7 +105,7 @@ class Action {
      *      in the front.
      *  if empty, current action file path will used as the template path.
      * 
-     *  note must using full path in template, unless the template is used
+     *  note must use full path in template, unless the template is used
      *      only in one place.
      * 
      * @param array $data 

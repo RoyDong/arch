@@ -9,4 +9,8 @@ class Article {
         $article = new \model\Article;
         return $article->getTitles( $offset , $limit );
     }
+
+    public static function getLastOne(){
+        $article = new \model\Article;
+    }
 }

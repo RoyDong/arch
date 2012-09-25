@@ -6,7 +6,7 @@
         Purpose of the stylesheet follows.
 */
 
-body, div, span, form, ul, li, input, label, button{
+body, div, span, form, ul, li {
     margin: 0px;
     padding: 0px;
     border: none;

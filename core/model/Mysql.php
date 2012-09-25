@@ -127,9 +127,13 @@ class Mysql extends \core\Model {
      * get data from sql db
      * @return array
      */
-    public function findOne( $where ){
+    public function findOne( $where , $order = '' , $columns = '*' ){
+        if( $order ) $order = ' ORDER BY ' .$order;
+
         $result = $this->pdo->query(
-                'SELECT * FROM `'.$this->table.'` WHERE '.$where.' LIMIT 0,1' );
+                'SELECT '.$columns.' FROM `'.$this->table.
+                '` WHERE '.$where.$order.' LIMIT 0,1' );
+
         if( $result ) return $result->fetch( \PDO::FETCH_ASSOC );
     }
 

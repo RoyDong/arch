@@ -4,7 +4,10 @@ namespace action\article;
 class Index extends \core\Action {
 
     public function get(){
-        $titles = \module\Article::getTitles();
-        $this->render( 'index' , [ 'titles' => $titles ] );
+        $article = new \model\Article;
+        $this->render( 'index' , [ 
+                'titles' => $article->getTitles(),
+                'article' => $article->getLastOne()
+            ] );
     }
 }

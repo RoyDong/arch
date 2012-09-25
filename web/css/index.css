@@ -7,9 +7,20 @@
     line-height: 1.3em;
 }
 
+#ctime {
+    margin-left: 30px;
+    color: #333;
+    font-size: 16px;
+}
+
 #content{
     font-size: 14px;
     line-height: 30px;
+}
+
+#content a{
+    color: #06C;
+    text-decoration: none;
 }
 
 #article-bar {
@@ -21,12 +32,10 @@
     border: 2px solid #DCE5EE;
 }
 
-#article-bar div{
-    cursor: pointer;
-}
-
 #article-bar #bar-list {
     margin: 10px 0px;
+    height: 450px;
+    overflow: hidden;
 }
 
 #article-bar #bar-list li {

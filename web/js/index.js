@@ -1,6 +1,6 @@
 $(function(){
     var selectedTitle;
-    $('#article-bar li').bind({
+    $('#article-bar li').live({
         mouseenter: function(){
             if($(this).hasClass('bar-title-select')) return;
             $(this).addClass('bar-title-hover');
@@ -28,14 +28,25 @@ $(function(){
     });
 
     var Title = {
+        data: TITLES,
         select: null,
-
         offset: 0,
 
-        count: TITLES.length,
+        init: function(){
+            var li , article;
+            var ul = $('<ul>');
+            for( var i = 0 , l = this.data.length ; i < l ; i++ ){
+                article = this.data[i];
+                li = '<li title="'+article.title+'"><span class="bar-title">'+
+                    article.title+'</span><span class="bar-time">'+
+                    article.ctime+'</span></li>';
 
-        refresh: function(){
+                ul.append(li);
+            }
 
+            $('#article-bar #bar-list').append(ul);
         }
     };
+
+    Title.init();
 });
